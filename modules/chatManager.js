@@ -60,7 +60,5 @@ const addClient = function(socketid, username){
 
 module.exports = {
     msg: msg,
-    clients: clients,
-    Client: Client,
     addClient: addClient
 };
