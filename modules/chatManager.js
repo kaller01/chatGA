@@ -8,7 +8,7 @@ let Client =function(socketid, name){
     this.getUsername = function () {
         return username;
     }
-}
+};
 
 //Array with clients
 let clients = [];
@@ -28,10 +28,18 @@ let msg = function(fromId, fromUser, message, io) {
         clients.forEach(function (client) {
             if(client.getUsername()===receiver){
                 console.log('true');
+                message = message.replace('/msg '+receiver, '');
                 //sends the message
                 io.to(client.getId()).emit('chatMessage',{
                     message: message,
-                    username: fromUser
+                    username: fromUser,
+                    private: 'to'
+                });
+                io.to(fromId).emit('chatMessage',{
+                    message: message,
+                    username: fromUser,
+                    private: 'from',
+                    receiver: client.getUsername()
                 });
             }
         });
@@ -45,8 +53,14 @@ let msg = function(fromId, fromUser, message, io) {
     }
 };
 
+const addClient = function(socketid, username){
+    clients.push(new Client(socketid, username));
+    console.log("New user: "+username);
+};
+
 module.exports = {
     msg: msg,
     clients: clients,
-    Client: Client
+    Client: Client,
+    addClient: addClient
 };
