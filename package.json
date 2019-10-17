@@ -1,21 +1,18 @@
 {
-  "name": "test",
+  "name": "chatfromscratch1",
   "version": "1.0.0",
-  "description": "",
+  "description": "Chat from scratch to learn",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "author": "me",
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "nodemon": "^1.19.3",
-    "p5": "^0.9.0",
     "socket.io": "^2.3.0"
   },
   "devDependencies": {
-    "modules": "^0.4.0"
+    "nodemon": "^1.19.4"
   }
 }

@@ -1,0 +1,46 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#output {
+  height: 90vh;
+  overflow: auto;
+  white-space: pre-line;
+  width: 100%;
+  border: 1px solid black;
+}
+#output :nth-child(even) {
+  background-color: #dddddd;
+}
+p {
+  width: 100%;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
+#chatBoxDiv {
+  width: 50vw;
+}
+#chatForm {
+  width: 100%;
+}
+#loginOverlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: gray;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#errorUsername {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  color: orange;
+}

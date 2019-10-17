@@ -1,43 +1,23 @@
-const express = require('express');
+const express = require("express");
+const socket = require("socket.io");
+
 const app = express();
-const http = require('http').createServer(app);
-const port=3350;
-const hostname="192.168.250.60";
-const io = require('socket.io')(http);
-const dirPath ="/Users/markal307/WebstormProjects/test/";
-const chat = require(__dirname+ '/modules/chat');
 
-app.get('/', function (req, res){
-   res.sendFile(__dirname + '/views/index.html');
+const server = app.listen(2350, function() {
+  console.log("listening on port 2350");
 });
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
-io.on('connection', function (socket) {
-    // chat.onConnect(socket);
-   console.log('a user connected');
-   socket.on('disconnect', function () {
-       console.log('user disconnected');
-   });
-   socket.on('chat', function (msg) {
-       console.log('message: '+msg);
+let io = socket(server);
 
-       io.emit('chat', msg);
-   });
+io.on("connection", function(socket) {
+  console.log("user connected " + socket.id);
+  socket.on("disconnect", function() {
+    console.log("user disconnected");
+  });
+
+  socket.on("chatMessage", function(data) {
+    io.emit("chatMessage", data);
+  });
 });
-
-
-http.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-});
-
-for(let index; index < 10; index++) {
-
-    if(true){
-        index++;
-    }
-
-}
-
-console.log(index);
-
