@@ -6,7 +6,7 @@ const manager = function(socket, io){
     });
 
     socket.on("chatMessage", function(data) {
-        chat.msg(socket.id, data.username, data.message, io);
+        chat.msg(socket.id, data.message, io);
     });
 
     socket.on('login', function (username) {

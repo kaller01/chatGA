@@ -15,7 +15,7 @@ let clients = [];
 //Dummy data
 //clients[223] = new Client(123, 'Dan123');
 
-let msg = function(fromId, fromUser, message, io) {
+let msg = function(fromId, message, io) {
 
     //checks for /msg
     if(message.startsWith('/msg')){
@@ -32,12 +32,12 @@ let msg = function(fromId, fromUser, message, io) {
                 //sends the message
                 io.to(clients[id].getId()).emit('chatMessage',{
                     message: message,
-                    username: fromUser,
+                    username: clients[fromId].getUsername(),
                     private: 'to'
                 });
                 io.to(fromId).emit('chatMessage',{
                     message: message,
-                    username: fromUser,
+                    username: clients[fromId].getUsername(),
                     private: 'from',
                     receiver: clients[id].getUsername()
                 });
@@ -59,12 +59,12 @@ let msg = function(fromId, fromUser, message, io) {
         });
         io.to(fromId).emit('chatMessage',{
             message: data,
-            username: "System",
+            username: "system",
         });
     } else {
         io.emit("chatMessage", {
             message: message,
-            username: fromUser
+            username: clients[fromId].getUsername()
         });
     }
 };
