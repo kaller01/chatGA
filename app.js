@@ -1,10 +1,15 @@
 const express = require("express");
 const socket = require("socket.io");
-
+const socketManager = require("./modules/socketManager");
+const port = 3200;
+const hostMartinRemote="192.168.250.60";
+const hostAlbinRemote="192.168.250.52";
+const hostMartin="192.168.2.199";
+const host="localhost";
 const app = express();
 
-const server = app.listen(2350, function() {
-  console.log("listening on port 2350");
+const server = app.listen(port, hostMartinRemote, function() {
+  console.log(`Server running at http://${hostMartinRemote}:${port}/`);
 });
 
 app.use(express.static("public"));
@@ -12,12 +17,5 @@ app.use(express.static("public"));
 let io = socket(server);
 
 io.on("connection", function(socket) {
-  console.log("user connected " + socket.id);
-  socket.on("disconnect", function() {
-    console.log("user disconnected");
-  });
-
-  socket.on("chatMessage", function(data) {
-    io.emit("chatMessage", data);
-  });
+  socketManager.manager(socket, io);
 });
