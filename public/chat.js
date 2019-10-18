@@ -60,3 +60,7 @@ socket.on("chatMessage", function(data) {
     top: 1000
   });
 });
+
+socket.on('rickroll', function () {
+  window.location.replace('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+});

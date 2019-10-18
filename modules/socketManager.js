@@ -1,9 +1,8 @@
 const chat = require("./chatManager");
 
 const manager = function(socket, io){
-    console.log("user connected " + socket.id);
     socket.on("disconnect", function() {
-        console.log("user disconnected");
+        chat.disconnect(socket.id);
     });
 
     socket.on("chatMessage", function(data) {
