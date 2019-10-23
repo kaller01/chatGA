@@ -1,3 +1,5 @@
+const command = require("./commands");
+
 //Object Client
 let Client =function(socketid, name){
     let id=socketid;
@@ -24,50 +26,14 @@ let msg = function(fromId, message, io) {
     }else{
     //checks for /msg
     if(message.startsWith('/msg')){
-
-        //gets the receiver
-        let receiver = message.split(/\s+/)[1];
-
-        //lops through each client and checks username
-        Object.keys(clients).forEach(function (id) {
-            console.log(clients[id].getUsername());
-            if(clients[id].getUsername()===receiver){
-                console.log('true');
-                message = message.replace('/msg '+receiver, '');
-                //sends the message
-                io.to(clients[id].getId()).emit('chatMessage',{
-                    message: message,
-                    username: clients[fromId].getUsername(),
-                    private: 'to'
-                });
-                io.to(fromId).emit('chatMessage',{
-                    message: message,
-                    username: clients[fromId].getUsername(),
-                    private: 'from',
-                    receiver: clients[id].getUsername()
-                });
-            }
-        });
+        command.private(fromId, message, io, clients);
         //if it isnt private message
     }else if(message.startsWith('/rickroll')){
-        let receiver = message.split(/\s+/)[1];
-        Object.keys(clients).forEach(function (id) {
-            if (clients[id].getUsername() === receiver) {
-                io.to(clients[id].getId()).emit('rickroll');
-            }
-        });
+        command.rickroll(fromId, message, io, clients);
     }else if(message.startsWith('/clients')){
-        console.log(clients);
-        let data="";
-        Object.keys(clients).forEach(function (id) {
-           data+=clients[id].getUsername()+", ";
-        });
-        io.to(fromId).emit('chatMessage',{
-            message: data,
-            username: "system",
-        });
-    } else if(message.startsWith('/clients')){
-
+        command.users(fromId, message, io, clients);
+    } else if(message.startsWith('/challenge')){
+        command.challenge(fromId, message, io, clients);
     }else {
         io.emit("chatMessage", {
             message: message,
@@ -92,6 +58,9 @@ const disconnectClient = function(socketid){
     console.log("Removed user: "+socketid);
   delete clients[socketid];
 };
+
+
+
 
 module.exports = {
     msg: msg,
