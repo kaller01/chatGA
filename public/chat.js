@@ -20,29 +20,36 @@ chatForm.addEventListener("submit", function(event) {
 });
 
 loginButton.addEventListener("click", function(event) {
-  if (username.value.length >= 3 && username.value.length <= 20) {
+  usernameValue = username.value.replace(/ |:/g, '');
+  if (usernameValue.length >= 3 && usernameValue.length <= 20) {
     loginOverlay.style.display = "none";
-    socket.emit("login", username.value);
+    socket.emit("login", usernameValue);
   } else {
     errorUsername.innerHTML = "Name must be between 3 and 20 characters long";
   }
 });
 username.addEventListener("keydown", function(event) {
+  usernameValue = username.value.replace(/ |:/g, '');
   if (
     event.keyCode === 13 &&
-    username.value.length >= 3 &&
-    username.value.length <= 20
+    usernameValue.length >= 3 &&
+    usernameValue.length <= 20
   ) {
     loginOverlay.style.display = "none";
-    socket.emit("login", username.value);
+    socket.emit("login", usernameValue);
   } else if (
-    (username.value.length <= 3 && event.keyCode === 13) ||
-    (username.value.length >= 20 && event.keyCode === 13)
+    (usernameValue.length <= 3 && event.keyCode === 13) ||
+    (usernameValue.length >= 20 && event.keyCode === 13)
   ) {
     errorUsername.innerHTML = "Name must be between 3 and 20 characters long";
   }
   if (event.keyCode === 32) return false;
 });
+
+let ignoreKey = function(event){
+  let key = event.code;
+  if(key === 'Space' || key === 'Period') return false;
+}
 
 socket.on("chatMessage", function(data) {
   if(data.private){
