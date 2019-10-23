@@ -41,6 +41,7 @@ username.addEventListener("keydown", function(event) {
   ) {
     errorUsername.innerHTML = "Name must be between 3 and 20 characters long";
   }
+  if (event.keyCode === 32) return false;
 });
 
 socket.on("chatMessage", function(data) {
