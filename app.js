@@ -8,8 +8,8 @@ const hostMartin="192.168.2.199";
 const host="localhost";
 const app = express();
 
-const server = app.listen(port, hostMartinRemote, function() {
-  console.log(`Server running at http://${hostMartinRemote}:${port}/`);
+const server = app.listen(port, hostAlbinRemote, function() {
+  console.log(`Server running at http://${hostAlbinRemote}:${port}/`);
 });
 
 app.use(express.static("public"));

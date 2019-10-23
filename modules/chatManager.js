@@ -70,9 +70,12 @@ let msg = function(fromId, message, io) {
 };
 
 const addClient = function(socketid, username){
+    username = username.replace(/ |:/g, '');
     clients[socketid] = new Client(socketid, username);
     console.log("New user: "+clients[socketid].getUsername()+" "+clients[socketid].getId());
 };
+
+addClient("123", " : 69");
 
 const disconnectClient = function(socketid){
     console.log("Removed user: "+socketid);
