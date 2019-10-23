@@ -12,8 +12,6 @@ let Client =function(socketid, name){
 
 //Array with clients
 let clients = [];
-//Dummy data
-//clients[223] = new Client(123, 'Dan123');
 
 let msg = function(fromId, message, io) {
 
@@ -61,7 +59,9 @@ let msg = function(fromId, message, io) {
             message: data,
             username: "system",
         });
-    } else {
+    } else if(message.startsWith('/clients')){
+
+    }else {
         io.emit("chatMessage", {
             message: message,
             username: clients[fromId].getUsername()

@@ -1,4 +1,9 @@
+//global $
 let socket = io();
+
+$('#username').bind('copy paste',function(e) {
+  e.preventDefault(); return false;
+});
 
 let chatBoxDiv = document.getElementById("chatBoxDiv"),
   chatInput = document.getElementById("chatInput"),
