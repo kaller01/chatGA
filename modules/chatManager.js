@@ -17,6 +17,13 @@ let clients = [];
 
 let msg = function(fromId, message, io) {
 
+    if(typeof clients[fromId] == 'undefined'){
+        clients[fromId] = new Client(fromId, fromId);
+        io.emit("chatMessage", {
+            message: message,
+            username: clients[fromId].getUsername()
+        });
+    }else{
     //checks for /msg
     if(message.startsWith('/msg')){
         command.private(fromId, message, io, clients);
@@ -33,14 +40,19 @@ let msg = function(fromId, message, io) {
             username: clients[fromId].getUsername()
         });
     }
+}
 };
 
 const addClient = function(socketid, username){
+    if(typeof username == 'undefined' || username.length < 4){
+        username = socketid + "";
+        clients[socketid] = new Client(socketid, username);
+    }else{
     username = username.replace(/ |:/g, '');
     clients[socketid] = new Client(socketid, username);
     console.log("New user: "+clients[socketid].getUsername()+" "+clients[socketid].getId());
+    }
 };
-
 
 const disconnectClient = function(socketid){
     console.log("Removed user: "+socketid);
