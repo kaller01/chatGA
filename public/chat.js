@@ -54,20 +54,17 @@ username.addEventListener("keydown", function(event) {
 let ignoreKey = function(event){
   let key = event.code;
   if(key === 'Space' || key === 'Period') return false;
-}
+};
 
 socket.on("chatMessage", function(data) {
   if(data.private){
     if(data.private==='to'){
-      output.innerHTML +=
-          "<p>" + "<strong>" + data.username + " whispers:</strong> " + data.message + "</p>";
+      $("#output").append($('<p>').append($(('<strong>')).text(data.username + " whispers: ")).append($('<span>').text(data.message)));
     } else if(data.private==='from'){
-      output.innerHTML +=
-          "<p>" + "<strong>" + data.username + " to " + data.receiver + ":</strong> " + data.message + "</p>";
+      $("#output").append($('<p>').append($(('<strong>')).text(data.username + " to " + data.receiver + ": ")).append($('<span>').text(data.message)));
     }
   } else {
-    output.innerHTML +=
-        "<p>" + "<strong>" + data.username + ":</strong> " + data.message + "</p>";
+    $("#output").append($('<p>').append($(('<strong>')).text(data.username+": ")).append($('<span>').text(data.message)));
   }
   output.scrollBy({
     top: 1000

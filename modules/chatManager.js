@@ -30,10 +30,13 @@ let msg = function(fromId, message, io) {
         //if it isnt private message
     }else if(message.startsWith('/rickroll')){
         command.rickroll(fromId, message, io, clients);
+
     }else if(message.startsWith('/clients')){
         command.users(fromId, message, io, clients);
+
     } else if(message.startsWith('/challenge')){
         command.challenge(fromId, message, io, clients);
+
     }else {
         io.emit("chatMessage", {
             message: message,
@@ -58,9 +61,6 @@ const disconnectClient = function(socketid){
     console.log("Removed user: "+socketid);
   delete clients[socketid];
 };
-
-
-
 
 module.exports = {
     msg: msg,
