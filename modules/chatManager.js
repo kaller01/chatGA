@@ -1,4 +1,6 @@
 const command = require("./commands");
+const stripHtml = require("string-strip-html");
+const anchorme = require("anchorme").default;
 
 //Object Client
 let Client =function(socketid, name){
@@ -15,7 +17,9 @@ let Client =function(socketid, name){
 //Array with clients
 let clients = [];
 
-let msg = function(fromId, message, io) {
+let msg = function(fromId, rawMessage, io) {
+    //Uses stripHtml to remove all html tags and then uses anchrome to put <a> around links
+    const message = anchorme(stripHtml(rawMessage));
 
     if(typeof clients[fromId] == 'undefined'){
         clients[fromId] = new Client(fromId, fromId);
