@@ -59,12 +59,12 @@ let ignoreKey = function(event){
 socket.on("chatMessage", function(data) {
   if(data.private){
     if(data.private==='to'){
-      $("#output").append($('<p>').append($(('<strong>')).text(data.username + " whispers: ")).append($('<span>').text(data.message)));
+      $("#output").append($('<p>').append($(('<strong>')).text(data.username + " whispers: ")).append($('<span>').html(data.message)));
     } else if(data.private==='from'){
-      $("#output").append($('<p>').append($(('<strong>')).text(data.username + " to " + data.receiver + ": ")).append($('<span>').text(data.message)));
+      $("#output").append($('<p>').append($(('<strong>')).text(data.username + " to " + data.receiver + ": ")).append($('<span>').html(data.message)));
     }
   } else {
-    $("#output").append($('<p>').append($(('<strong>')).text(data.username+": ")).append($('<span>').text(data.message)));
+    $("#output").append($('<p>').append($(('<strong>')).text(data.username+": ")).append($('<span>').html(data.message)));
   }
   output.scrollBy({
     top: 1000
