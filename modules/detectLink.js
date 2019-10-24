@@ -1,12 +1,19 @@
-var anchorme = require("anchorme").default; // if installed via NPM
-var someText = "this is a text with a link www.github.com ..";
-var result = anchorme(someText);
-console.log(result);
+var sqlite3 = require('sqlite3').verbose();
+var db = new sqlite3.Database('table.sqlite3');
 
-const stripHtml = require("string-strip-html");
-// it does not assume the output must be always HTML and detects legit brackets:
-console.log(stripHtml("a < b and c > d")); // => 'a < b and c > d'
-// leaves content between tags:
-console.log(stripHtml("Some text <b>and</b> text.")); // => 'Some text and text.'
-// adds spaces to prevent accidental string concatenation
-console.log(stripHtml("aaa<div>bbb</div>ccc")); // => 'aaa bbb ccc'
+db.serialize(function () {
+    // db.run('CREATE TABLE lorem (info TEXT)');
+    var stmt = db.prepare('INSERT INTO lorem VALUES (?)');
+
+    for (var i = 0; i < 10; i++) {
+        stmt.run('Ipsum ' + i);
+    }
+
+    stmt.finalize();
+
+    db.each('SELECT rowid AS id, info FROM lorem', function (err, row) {
+        console.log(row.id + ': ' + row.info);
+    })
+});
+//
+// db.close();
