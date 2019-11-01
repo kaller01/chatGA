@@ -11,7 +11,7 @@ let chatBoxDiv = document.getElementById("chatBoxDiv"),
   output = document.getElementById("output"),
   loginForm = document.getElementById("loginForm"),
   username = document.getElementById("username"),
-  loginOverlay = document.getElementById("loginOverlay"),
+  loginOverlay = document.getElementById("startOverlay"),
   loginButton = document.getElementById("loginButton"),
   errorUsername = document.getElementById("errorUsername");
 
@@ -27,12 +27,33 @@ chatForm.addEventListener("submit", function(event) {
 loginButton.addEventListener("click", function(event) {
   usernameValue = username.value.replace(/ |:/g, '');
   if (usernameValue.length >= 3 && usernameValue.length <= 20) {
-    loginOverlay.style.display = "none";
+    // loginOverlay.style.display = "none";
+    $('#guestOverlay').hide();
     socket.emit("login", usernameValue);
   } else {
     errorUsername.innerHTML = "Name must be between 3 and 20 characters long";
   }
 });
+
+$('#guestloginButton').click(()=>{
+  $('#startOverlay').hide();
+  $('#guestOverlay').css('display', 'flex');
+});
+
+$('#loginAccountButton').click(()=>{
+  $('#startOverlay').hide();
+  $('#loginOverlay').css('display', 'flex');
+});
+
+$('#login').click(()=>{
+  let username1 = $('#usernameLoginInput').val();
+  let password1 = $('#passwordLoginInput').val();
+  socket.emit("loginAccount", {
+    username: username1,
+    password: password1
+  });
+});
+
 username.addEventListener("keydown", function(event) {
   usernameValue = username.value.replace(/ |:/g, '');
   if (
@@ -74,3 +95,12 @@ socket.on("chatMessage", function(data) {
 socket.on('rickroll', function () {
   window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 });
+
+socket.on('loginAccount',(accept)=>{
+  if(accept){
+    $('#loginOverlay').hide();
+  } else {
+    alert('wrong password');
+  }
+});
+

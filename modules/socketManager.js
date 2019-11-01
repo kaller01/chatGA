@@ -12,6 +12,10 @@ const manager = function(socket, io){
     socket.on('login', function (username) {
         chat.addClient(socket.id,username);
     });
+    socket.on('loginAccount',function(data){
+        console.log(data.username, data.password);
+        chat.login(socket.id, io, data.username, data.password);
+    })
 };
 
 module.exports = {

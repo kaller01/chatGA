@@ -1,6 +1,7 @@
 const command = require("./commands");
 const stripHtml = require("string-strip-html");
 const anchorme = require("anchorme").default;
+const db = require('../db/db');
 
 //Object Client
 let Client =function(socketid, name){
@@ -66,8 +67,20 @@ const disconnectClient = function(socketid){
   delete clients[socketid];
 };
 
+async function logintoDB(socketid,io,username,password){
+    let login = await db.login(username,password);
+    if(login){
+        console.log(username+" logged in: " +login);
+        addClient(socketid, username);
+        io.to(socketid).emit('loginAccount',true);
+    } else {
+        io.to(socketid).emit('loginAccount',false);
+    }
+}
+
 module.exports = {
     msg: msg,
     addClient: addClient,
-    disconnect: disconnectClient
+    disconnect: disconnectClient,
+    login: logintoDB
 };
