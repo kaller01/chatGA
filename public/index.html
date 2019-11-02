@@ -18,20 +18,21 @@
 <body>
 <div id="startOverlay" class="overlay">
     <div class="container d-flex justify-content-between">
-        <div class="btn btn-primary col-4 buttonSelect" id="loginAccountButton">
+        <button class="btn btn-primary col-4 buttonSelect" id="loginAccountButton">
             <h2>Login</h2>
-        </div>
-        <div class="btn btn-success col-4 buttonSelect" id="createAccountButton">
+        </button>
+        <button class="btn btn-success col-4 buttonSelect" id="createAccountButton">
             <h2>Create Account</h2>
-        </div>
-        <div class="btn btn-secondary col-4 buttonSelect" id="guestloginButton">
+        </button>
+        <button class="btn btn-dark col-4 buttonSelect" id="guestloginButton">
             <h2>Guest</h2>
-        </div>
+        </button>
     </div>
 </div>
 
-<div id="loginOverlay" class="overlay">
-    <div class="container rounded bg-primary">
+<div id="loginOverlay" class="overlay overlayON">
+    <div class="container rounded bg-primary" id="loginOverlayContainer">
+        <h3 class="text-white">Login to Account</h3>
         <div class="input-group w-25">
             <div class="input-group-prepend">
                 <span class="input-group-text">Username:</span>
@@ -63,30 +64,66 @@
     </div>
 </div>
 
-
-<div id="guestOverlay" class="overlay">
-    <div class="input-group w-25">
-        <div class="input-group-prepend">
-            <span class="input-group-text">Username:</span>
+<div id="createOverlay" class="overlay overlayON">
+    <div class="container rounded bg-success" id="createOverlayContainer">
+        <h3 class="text-white">Create Account</h3>
+        <div class="input-group w-25">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Username:</span>
+            </div>
+            <input
+                    type="text"
+                    class="form-control"
+                    id="usernameCreateInput"
+                    onkeypress="return ignoreKey(event)"
+            />
         </div>
-        <input
-                type="text"
-                class="form-control"
-                placeholder="username"
-                id="username"
-                onkeypress="return ignoreKey(event)"
-        />
-        <div class="input-group-append">
-            <button
-                    class="btn btn-outline-secondary bg-primary text-light"
-                    id="loginButton"
-            >
+        <div class="input-group w-25">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Password:</span>
+            </div>
+            <input
+                    type="password"
+                    class="form-control"
+                    id="passwordCreateInput"
+                    onkeypress="return ignoreKey(event)"
+            />
+        </div>
+
+        <div class="input-group-append w-25">
+            <button class="btn btn-light btn-block" id="create">
                 Login
             </button>
         </div>
+    </div>
+</div>
+
+<div id="guestOverlay" class="overlay overlayON">
+    <div class="container rounded bg-dark" id="guestOverlayContainer">
+        <h3 class="text-white">Guest Account</h3>
+        <div class="input-group w-25">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Username:</span>
+            </div>
+            <input
+                    type="text"
+                    class="form-control"
+                    placeholder="username"
+                    id="username"
+                    onkeypress="return ignoreKey(event)"
+            />
+        </div>
+
+        <div class="input-group-append w-25">
+            <button class="btn btn-light btn-block" id="loginButton">
+                Login
+            </button>
+        </div>
+
         <div id="errorUsername"></div>
     </div>
 </div>
+
 <div class="wrapper">
     <div id="chatBoxDiv">
         <div id="output"></div>

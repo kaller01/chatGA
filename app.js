@@ -1,6 +1,7 @@
 const express = require("express");
 const socket = require("socket.io");
 const socketManager = require("./modules/socketManager");
+const db = require('./db/db');
 const port = 3200;
 const MartinRemote="192.168.250.60";
 const AlbinRemote="192.168.250.52";
@@ -9,9 +10,20 @@ const local="localhost";
 const host = Martin;
 const app = express();
 
-app.get('/users', function (req, res) {
-  // console.log(req);
-  res.end('hej');
+// app.get('/users/:user', function (req, res) {
+//   console.log(user);
+//   res.end('hej');
+// });
+
+app.get('/users/:username', function (req, res) {
+  let user = req.params.username;
+  db.getUser(user).then(r=>{
+    console.log(r);
+    let name = r[0].username;
+    let rawdate = r[0].timeadded;
+    let date = new Date(rawdate);
+    res.send('<h1>'+name+'</h1><br>'+date);
+  });
 });
 
 const server = app.listen(port, host, function() {

@@ -78,9 +78,20 @@ async function logintoDB(socketid,io,username,password){
     }
 }
 
+async function createUserDB(socketid,io,username,password){
+    let test = await db.addUser(username,password);
+    if(test){
+        io.to(socketid).emit('createAccount',true);
+        addClient(socketid, username);
+    } else {
+        io.to(socketid).emit('createAccount',false);
+    }
+}
+
 module.exports = {
     msg: msg,
     addClient: addClient,
     disconnect: disconnectClient,
-    login: logintoDB
+    login: logintoDB,
+    createUser: createUserDB
 };

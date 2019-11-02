@@ -45,14 +45,29 @@ $('#loginAccountButton').click(()=>{
   $('#loginOverlay').css('display', 'flex');
 });
 
+$('#createAccountButton').click(()=>{
+  $('#startOverlay').hide();
+  $('#createOverlay').css('display', 'flex');
+});
+
 $('#login').click(()=>{
-  let username1 = $('#usernameLoginInput').val();
-  let password1 = $('#passwordLoginInput').val();
+  let username = $('#usernameLoginInput').val();
+  let password = $('#passwordLoginInput').val();
   socket.emit("loginAccount", {
-    username: username1,
-    password: password1
+    username: username,
+    password: password
   });
 });
+
+$('#create').click(()=>{
+  let username = $('#usernameCreateInput').val();
+  let password = $('#passwordCreateInput').val();
+  socket.emit("createAccount", {
+    username: username,
+    password: password
+  });
+});
+
 
 username.addEventListener("keydown", function(event) {
   usernameValue = username.value.replace(/ |:/g, '');
@@ -104,3 +119,30 @@ socket.on('loginAccount',(accept)=>{
   }
 });
 
+socket.on('createAccount',(accept)=>{
+  if(accept){
+    $('#createOverlay').hide();
+  } else {
+    alert('password already in use by "Admin"');
+  }
+});
+
+
+function hideWhenOutside(id) {
+  console.log(id);
+  $(id).click((e)=>{
+    console.log('yes');
+    let container = $(id+'Container');
+    console.log(container);
+    if (!container.is(e.target) && container.has(e.target).length === 0)
+    {
+      console.log(true);
+      $(id).hide();
+      $('#startOverlay').css('display', 'flex');
+    }
+  });
+}
+
+hideWhenOutside('#createOverlay');
+hideWhenOutside('#loginOverlay');
+hideWhenOutside('#guestOverlay');

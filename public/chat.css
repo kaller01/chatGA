@@ -50,7 +50,7 @@ p {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: gray;
+  background-color: slategray;
   z-index: 10;
   display: none;
   justify-content: center;
@@ -58,7 +58,7 @@ p {
   flex-wrap: wrap;
 }
 
-#loginOverlay .container{
+#loginOverlay .container, #createOverlay .container, #guestOverlay .container{
   height: 300px;
   display: flex;
   flex-direction: column;

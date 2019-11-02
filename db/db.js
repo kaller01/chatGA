@@ -32,6 +32,24 @@ function getHashByUsername(username) {
     });
 }
 
+const getAllByUsername = (username)=> {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * from users where username='" + username + "'";
+        db.all(sql, (err, row) => {
+            if (err) {
+                console.log(err);
+                resolve('');
+            } else {
+                resolve(row);
+            }
+        })
+    });
+};
+
+getAllByUsername('HappyHarry').then(r=>{
+   console.log(r);
+});
+
 function compareHash(password, hash) {
     return new Promise((resolve, reject) => {
         bcrypt.compare(password, hash, function (err, res) {
@@ -44,17 +62,21 @@ function compareHash(password, hash) {
     });
 }
 
-async function addUser(username, password) {
-    const hash = await encrypt(password);
-    const query = `INSERT INTO users values (null,'${username}','${hash}');`;
-    db.run(query, function (err) {
-        if (err) {
-            console.log('oj nu blidä ärror');
-        } else {
-            console.log('Added user to DB: ' + username + " " + hash);
-        }
+const addUser = (username, password)=> {
+    return new Promise(async (resolve,reject)=>{
+        const hash = await encrypt(password);
+        const query = `INSERT INTO users values (null,'${username}','${hash}','${Date.now()}');`;
+        db.run(query, function (err) {
+            if (err) {
+                console.log('oj nu blidä ärror');
+                resolve(false);
+            } else {
+                console.log('Added user to DB: ' + username + " " + hash);
+                resolve(true);
+            }
+        });
     });
-}
+};
 
 const login = function (username, password) {
     return new Promise(async (resolve, reject) => {
@@ -76,7 +98,8 @@ const login = function (username, password) {
 
 module.exports = {
     login: login,
-    addUser: addUser
+    addUser: addUser,
+    getUser: getAllByUsername
 };
 
 
