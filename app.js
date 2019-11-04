@@ -7,13 +7,8 @@ const MartinRemote="192.168.250.60";
 const AlbinRemote="192.168.250.52";
 const Martin="192.168.2.199";
 const local="localhost";
-const host = Martin;
+const host = MartinRemote;
 const app = express();
-
-// app.get('/users/:user', function (req, res) {
-//   console.log(user);
-//   res.end('hej');
-// });
 
 app.get('/users/:username', function (req, res) {
   let user = req.params.username;

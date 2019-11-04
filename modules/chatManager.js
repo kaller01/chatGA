@@ -52,7 +52,7 @@ let msg = function(fromId, rawMessage, io) {
 };
 
 const addClient = function(socketid, username){
-    if(typeof username == 'undefined' || username.length < 4){
+    if(typeof username == 'undefined' || username.length < 3){
         username = socketid + "";
         clients[socketid] = new Client(socketid, username);
     }else{

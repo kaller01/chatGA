@@ -35,38 +35,35 @@ loginButton.addEventListener("click", function(event) {
   }
 });
 
-$('#guestloginButton').click(()=>{
-  $('#startOverlay').hide();
-  $('#guestOverlay').css('display', 'flex');
-});
-
-$('#loginAccountButton').click(()=>{
-  $('#startOverlay').hide();
-  $('#loginOverlay').css('display', 'flex');
-});
-
-$('#createAccountButton').click(()=>{
-  $('#startOverlay').hide();
-  $('#createOverlay').css('display', 'flex');
-});
-
-$('#login').click(()=>{
-  let username = $('#usernameLoginInput').val();
-  let password = $('#passwordLoginInput').val();
-  socket.emit("loginAccount", {
-    username: username,
-    password: password
+function selectStart(id){
+  $(id+'AccountButton').click(()=>{
+    $('#startOverlay').hide();
+    $(id+'Overlay').css('display', 'flex');
   });
-});
+}
 
-$('#create').click(()=>{
-  let username = $('#usernameCreateInput').val();
-  let password = $('#passwordCreateInput').val();
-  socket.emit("createAccount", {
-    username: username,
-    password: password
+selectStart('#create');
+selectStart('#login');
+selectStart('#guest');
+
+
+function login(id,channel){
+  function doStuff(){
+    let username = $('#username'+id+'Input').val();
+    let password = $('#password'+id+'Input').val();
+    socket.emit(channel, {
+      username: username,
+      password: password
+    });
+  }
+  $('#'+id).click(()=>{
+   doStuff();
   });
-});
+  
+}
+
+login('create',"createAccount");
+login('login',"loginAccount");
 
 
 username.addEventListener("keydown", function(event) {
