@@ -41,27 +41,27 @@ function selectStart(id){
     $(id+'Overlay').css('display', 'flex');
   });
 }
+function login(id,channel){
+  function doStuff(){
+    let username = $('#username'+id+'Input').val();
+    if (username.length >= 3 && username.length <= 20) {
+      let password = $('#password'+id+'Input').val();
+      socket.emit(channel, {
+        username: username,
+        password: password
+      });
+    } else {
+      alert('too short');
+    }
+  }
+  $('#'+id).click(()=>{
+    doStuff();
+  });
+}
 
 selectStart('#create');
 selectStart('#login');
 selectStart('#guest');
-
-
-function login(id,channel){
-  function doStuff(){
-    let username = $('#username'+id+'Input').val();
-    let password = $('#password'+id+'Input').val();
-    socket.emit(channel, {
-      username: username,
-      password: password
-    });
-  }
-  $('#'+id).click(()=>{
-   doStuff();
-  });
-  
-}
-
 login('create',"createAccount");
 login('login',"loginAccount");
 
