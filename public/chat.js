@@ -36,16 +36,18 @@ loginButton.addEventListener("click", function(event) {
 });
 
 function selectStart(id){
-  $(id+'AccountButton').click(()=>{
+  $('#'+id+'AccountButton').click(()=>{
     $('#startOverlay').hide();
-    $(id+'Overlay').css('display', 'flex');
+    $('#'+id+'Overlay').css('display', 'flex');
+    window.location.href =href+'#'+id;
   });
 }
+
 function login(id,channel){
   function doStuff(){
     let username = $('#username'+id+'Input').val();
+    let password = $('#password'+id+'Input').val();
     if (username.length >= 3 && username.length <= 20) {
-      let password = $('#password'+id+'Input').val();
       socket.emit(channel, {
         username: username,
         password: password
@@ -55,13 +57,24 @@ function login(id,channel){
     }
   }
   $('#'+id).click(()=>{
+    console.log(id);
     doStuff();
+  });
+  $('#username'+id+'Input').keypress((e)=>{
+    if(e.key=='Enter'){
+      doStuff();
+    }
+  });
+  $('#password'+id+'Input').keypress((e)=>{
+    if(e.key=='Enter'){
+      doStuff();
+    }
   });
 }
 
-selectStart('#create');
-selectStart('#login');
-selectStart('#guest');
+selectStart('create');
+selectStart('login');
+selectStart('guest');
 login('create',"createAccount");
 login('login',"loginAccount");
 
@@ -103,11 +116,9 @@ socket.on("chatMessage", function(data) {
     top: 1000
   });
 });
-
 socket.on('rickroll', function () {
   window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 });
-
 socket.on('loginAccount',(accept)=>{
   if(accept){
     $('#loginOverlay').hide();
@@ -115,7 +126,6 @@ socket.on('loginAccount',(accept)=>{
     alert('wrong password');
   }
 });
-
 socket.on('createAccount',(accept)=>{
   if(accept){
     $('#createOverlay').hide();

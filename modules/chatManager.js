@@ -63,8 +63,10 @@ const addClient = function(socketid, username){
 };
 
 const disconnectClient = function(socketid){
-    console.log("Removed user: "+socketid);
-  delete clients[socketid];
+    if(clients[socketid]){
+        console.log("Removed user: "+socketid);
+        delete clients[socketid];
+    }
 };
 
 async function logintoDB(socketid,io,username,password){
@@ -79,10 +81,12 @@ async function logintoDB(socketid,io,username,password){
 }
 
 async function createUserDB(socketid,io,username,password){
-    username = username.replace(/[ :?]/g, '');
+    // username = username.replace(/[ :?]/g, '');
     console.log(username);
-    if(typeof username == 'undefined' || username.length < 3){
+    if(typeof username !== 'undefined' || username.length > 3){
+        console.log('hej');
         let test = await db.addUser(username,password);
+        console.log(test);
         if(test){
             io.to(socketid).emit('createAccount',true);
             addClient(socketid, username);
