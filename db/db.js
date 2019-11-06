@@ -46,6 +46,34 @@ const getAllByUsername = (username)=> {
     });
 };
 
+const searchByUsername = (username)=> {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * from users where username like '%" + username + "%'";
+        db.all(sql, (err, row) => {
+            if (err) {
+                console.log(err);
+                resolve(null);
+            } else {
+                resolve(row);
+            }
+        })
+    });
+};
+
+const getAll = ()=> {
+    return new Promise((resolve, reject) => {
+        let sql = "SELECT * from users";
+        db.all(sql, (err, row) => {
+            if (err) {
+                console.log(err);
+                resolve(null);
+            } else {
+                resolve(row);
+            }
+        })
+    });
+};
+
 function compareHash(password, hash) {
     return new Promise((resolve, reject) => {
         bcrypt.compare(password, hash, function (err, res) {
@@ -95,7 +123,9 @@ const login = function (username, password) {
 module.exports = {
     login: login,
     addUser: addUser,
-    getUser: getAllByUsername
+    getUser: getAllByUsername,
+    getAllUsers: getAll,
+    searchByUsername: searchByUsername
 };
 
 

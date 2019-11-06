@@ -14,7 +14,6 @@ const app = express();
 app.get('/users/:username', function (req, res) {
   let user = req.params.username;
   db.searchByUsername(user).then(r=>{
-    console.log(r);
     res.render('index',{data:r});
   });
 });
