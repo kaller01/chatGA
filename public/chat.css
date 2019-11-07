@@ -24,23 +24,44 @@ p {
 #chatForm {
   width: 100%;
 }
-#loginOverlay {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: gray;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-}
+
 #errorUsername {
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
   color: orange;
+}
+
+.buttonSelect{
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#startOverlay{
+  display: flex;
+}
+
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: slategray;
+  z-index: 10;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+#loginOverlay .container, #createOverlay .container, #guestOverlay .container{
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 }

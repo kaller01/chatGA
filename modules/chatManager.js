@@ -1,6 +1,7 @@
 const command = require("./commands");
 const stripHtml = require("string-strip-html");
 const anchorme = require("anchorme").default;
+const db = require('../db/db');
 
 //Object Client
 let Client =function(socketid, name){
@@ -51,7 +52,7 @@ let msg = function(fromId, rawMessage, io) {
 };
 
 const addClient = function(socketid, username){
-    if(typeof username == 'undefined' || username.length < 4){
+    if(typeof username == 'undefined' || username.length < 3){
         username = socketid + "";
         clients[socketid] = new Client(socketid, username);
     }else{
@@ -62,12 +63,43 @@ const addClient = function(socketid, username){
 };
 
 const disconnectClient = function(socketid){
-    console.log("Removed user: "+socketid);
-  delete clients[socketid];
+    if(clients[socketid]){
+        console.log("Removed user: "+socketid);
+        delete clients[socketid];
+    }
 };
+
+async function logintoDB(socketid,io,username,password){
+    let login = await db.login(username,password);
+    if(login){
+        console.log(username+" logged in: " +login);
+        addClient(socketid, username);
+        io.to(socketid).emit('loginAccount',true);
+    } else {
+        io.to(socketid).emit('loginAccount',false);
+    }
+}
+
+async function createUserDB(socketid,io,username,password){
+    // username = username.replace(/[ :?]/g, '');
+    console.log(username);
+    if(typeof username !== 'undefined' || username.length > 3){
+        console.log('hej');
+        let test = await db.addUser(username,password);
+        console.log(test);
+        if(test){
+            io.to(socketid).emit('createAccount',true);
+            addClient(socketid, username);
+        } else {
+            io.to(socketid).emit('createAccount',false);
+        }
+    }
+}
 
 module.exports = {
     msg: msg,
     addClient: addClient,
-    disconnect: disconnectClient
+    disconnect: disconnectClient,
+    login: logintoDB,
+    createUser: createUserDB
 };
