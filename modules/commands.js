@@ -23,6 +23,15 @@ const rickroll = function(fromId, message, io, clients){
     });
 };
 
+const modal = function(fromId, message, io, clients){
+    let receiver = message.split(/\s+/)[1];
+    Object.keys(clients).forEach(function (id) {
+        if (clients[id].getUsername() === receiver) {
+            io.to(clients[id].getId()).emit('modal');
+        }
+    });
+};
+
 const showConnectedUsers = function(fromId, message, io, clients){
     console.log(clients);
     let data="";
@@ -64,5 +73,6 @@ module.exports = {
     challenge: challenge,
     rickroll: rickroll,
     users: showConnectedUsers,
-    private: privateMessage
+    private: privateMessage,
+    modal: modal
 };
