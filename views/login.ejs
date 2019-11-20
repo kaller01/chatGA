@@ -14,5 +14,21 @@
     <input type="submit">
 </form>
 
+<script>
+    data = {username: 'harry', password: 'pass'};
+    async function f1() {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        };
+        const response = await fetch('/req', options);
+        console.log(response)
+    }
+    f1();
+</script>
+
 </body>
 </html>

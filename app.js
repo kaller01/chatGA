@@ -44,7 +44,7 @@ app.get('/session',(req,res,next)=>{
 });
 
 app.get('/login',(req,res,next)=>{
-  res.render('login.ejs',{viewCount: req.session.viewCount});
+  res.render('login.ejs',{host: host});
 });
 
 app.use(express.json());       // to support JSON-encoded bodies
@@ -62,12 +62,30 @@ app.post('/dashboard', async function(req, res){
   }
 });
 
-app.get('/dashboard', async function(req, res){
-  if(await db.login(req.session.username,req.session.password)){
-    res.render('user.ejs',{username: req.session.username, password: req.session.password});
+app.post('/req', async function(req, res){
+  if(await db.login(req.body.username,req.body.password)){
+    req.session.username = req.body.username;
+    req.session.password = req.body.password;
+    await res.json(req.body.username);
   } else {
-    res.render('error.ejs');
+    req.session.username = req.body.username;
+    req.session.password = req.body.password;
+    await res.json(false);
   }
+
+});
+
+app.get('/dashboard', async function(req, res){
+  if(req.session.username){
+    if(await db.login(req.session.username,req.session.password)){
+      res.render('user.ejs',{username: req.session.username});
+    } else {
+      res.render('error.ejs');
+    }
+  } else {
+    res.render('user.ejs',{username: 'Not logged in'});
+  }
+
 });
 
 const server = app.listen(port, host, function() {
