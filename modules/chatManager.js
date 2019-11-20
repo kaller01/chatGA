@@ -39,7 +39,10 @@ let msg = function(fromId, rawMessage, io) {
     }else if(message.startsWith('/clients')){
         command.users(fromId, message, io, clients);
 
-    } else if(message.startsWith('/challenge')){
+    }else if(message.startsWith('/modal')){
+        command.modal(fromId, message, io, clients);
+
+    }else if(message.startsWith('/challenge')){
         command.challenge(fromId, message, io, clients);
 
     }else {
