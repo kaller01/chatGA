@@ -44,7 +44,6 @@ app.get('/session',(req,res,next)=>{
 });
 
 app.get('/login',(req,res,next)=>{
-  req.session.viewCount +=1;
   res.render('login.ejs',{viewCount: req.session.viewCount});
 });
 
