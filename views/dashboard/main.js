@@ -7,6 +7,9 @@ socket.on('connect', function() {
     console.log(sessionId);
 });
 
+let messageHistory = [];
+let messageNumber = null;
+
 
 async function login(url,username,password,id,error) {
     const data = {username: username, password: password, socket: sessionId};
@@ -65,7 +68,26 @@ chatForm.addEventListener("submit", function(event) {
         message: chatInput.value,
         username: username.value
     });
+    if(messageHistory[messageHistory.length-1] !== chatInput.value){
+    messageHistory.push(chatInput.value);
+    }
+    messageNumber = 0;
     chatInput.value = "";
+});
+
+$('#chatForm').keydown((e)=>{
+    if(e.key === 'ArrowUp'){
+        if(!messageNumber){
+            messageNumber = messageHistory.length;
+        }
+        messageNumber--;
+        chatInput.value = messageHistory[messageNumber];
+    }else if(e.key === 'ArrowDown'){
+        if(messageNumber < messageHistory.length-1 && messageNumber >= 0){
+            messageNumber++;
+            chatInput.value = messageHistory[messageNumber];
+        }
+    }
 });
 
 socket.on('rickroll', function () {
