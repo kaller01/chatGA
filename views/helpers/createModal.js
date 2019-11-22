@@ -12,6 +12,7 @@ const createModal = (id,header,body,button)=>{
                 </div>
                 <div class="modal-body" id="modal${header}">
                     ${body}
+                    <p class="error" style="display:none;" id=error${id}>Error</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

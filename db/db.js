@@ -115,7 +115,7 @@ const login = function (username, password) {
             }
         } else {
             console.log("Wrong params");
-            reject(false);
+            resolve(false);
         }
     });
 };
