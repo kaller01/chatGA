@@ -23,10 +23,9 @@ let msg = function(fromId, rawMessage, io) {
     const message = anchorme(stripHtml(rawMessage));
 
     if(typeof clients[fromId] == 'undefined'){
-        clients[fromId] = new Client(fromId, fromId);
-        io.emit("chatMessage", {
-            message: message,
-            username: clients[fromId].getUsername()
+        io.to(fromId).emit('chatMessage',{
+            message: 'authorization needed',
+            username: 'system'
         });
     }else{
     //checks for /msg
