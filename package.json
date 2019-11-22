@@ -19,7 +19,7 @@
     "string-strip-html": "^4.3.4"
   },
   "devDependencies": {
-    "ejs": "^2.7.1",
+    "ejs": "^2.7.4",
     "express-session": "^1.17.0",
     "modules": "^0.4.0",
     "nodemon": "^1.19.4"

@@ -8,7 +8,7 @@ socket.on('connect', function() {
 });
 
 
-async function login(url,username,password,id) {
+async function login(url,username,password,id,error) {
     const data = {username: username, password: password, socket: sessionId};
     const options = {
         method: 'POST',
@@ -21,9 +21,13 @@ async function login(url,username,password,id) {
     const json = await response.json();
     console.log(json);
     if(json){
-        $(id).modal('hide');
+        $('#modal'+id).modal('hide');
         $('#displayName').html(json);
         $('#chatBoxDiv').show();
+        $('#error'+id).hide();
+    }else{
+        $('#error'+id).text(error);
+        $('#error'+id).show();
     }
 }
 
