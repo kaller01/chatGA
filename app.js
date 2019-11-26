@@ -12,7 +12,7 @@ const MartinRemote = "192.168.250.60";
 const AlbinRemote = "192.168.250.52";
 const Martin = "192.168.2.199";
 const local = "localhost";
-const host = MartinRemote;
+const host = local;
 const app = express();
 
 app.get("/users/:username", function(req, res) {
@@ -54,7 +54,6 @@ app.get("/login", (req, res, next) => {
 app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
-
 app.post("/dashboard", async function(req, res) {
   if (await db.login(req.body.username, req.body.password)) {
     req.session.username = req.body.username;
@@ -92,7 +91,7 @@ app.post("/req", async function(req, res) {
       req.session.username = req.body.username + "_guest";
       await res.json(req.session.username);
       chat.addClient(req.body.socket, req.session.username);
-    }else{
+    } else {
       res.json(false);
     }
   }
