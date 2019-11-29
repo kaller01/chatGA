@@ -68,3 +68,10 @@ p {
   text-align: center;
   color:orange;
 }
+
+/* .plyr__controls {
+  opacity: 0;
+} */
+.plyr__control--overlaid{
+  opacity: 0;
+}

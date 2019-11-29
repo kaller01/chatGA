@@ -12,7 +12,7 @@ const MartinRemote = "192.168.250.60";
 const AlbinRemote = "192.168.250.52";
 const Martin = "192.168.2.199";
 const local = "localhost";
-const host = local;
+const host = AlbinRemote;
 const app = express();
 
 app.get("/users/:username", function(req, res) {
@@ -112,7 +112,7 @@ app.post("/createAccount", async function(req, res) {
 
 app.get("/dashboard", async function(req, res) {
   if (req.session.username) {
-    if (await db.login(req.session.username, req.session.password)) {
+    if (await db.login(req.session.username, req.session.password) && req.session.password) {
       res.render("user.ejs", {
         username: req.session.username,
         helpers: ejsHelpers

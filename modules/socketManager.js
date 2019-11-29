@@ -15,7 +15,13 @@ const manager = function(socket, io){
     });
     socket.on('createAccount',(data)=> {
         chat.createUser(socket.id,io,data.username,data.password);
-    })
+    });
+    socket.on('player',function(data){
+        io.emit('playing',{
+            playing:data.playing,
+            position:data.position
+        })
+    });
 };
 
 module.exports = {
