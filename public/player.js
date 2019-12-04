@@ -1,4 +1,3 @@
-socket = io();
 const player = new Plyr('#player',{
     clickToPlay:false,
     listeners: {
