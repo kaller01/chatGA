@@ -58,7 +58,7 @@ app.post("/dashboard", async function(req, res) {
   if (await db.login(req.body.username, req.body.password)) {
     req.session.username = req.body.username;
     req.session.password = req.body.password;
-    res.render("user.ejs", {
+    res.render("dashboard.ejs", {
       username: req.session.username,
       password: req.session.password,
       helpers: ejsHelpers
@@ -110,10 +110,10 @@ app.post("/createAccount", async function(req, res) {
   }
 });
 
-app.get("/dashboard", async function(req, res) {
+app.get("/", async function(req, res) {
   if (req.session.username) {
     if (await db.login(req.session.username, req.session.password) && req.session.password) {
-      res.render("user.ejs", {
+      res.render("dashboard.ejs", {
         username: req.session.username,
         helpers: ejsHelpers
       });
@@ -121,7 +121,7 @@ app.get("/dashboard", async function(req, res) {
         chat.addClient(socket.id, req.session.username);
       });
     } else if (!req.session.password) {
-      res.render("user.ejs", {
+      res.render("dashboard.ejs", {
         username: req.session.username,
         helpers: ejsHelpers
       });
@@ -132,7 +132,7 @@ app.get("/dashboard", async function(req, res) {
       res.render("error.ejs");
     }
   } else {
-    res.render("user.ejs", { username: null, helpers: ejsHelpers });
+    res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
   }
 });
 
