@@ -31,6 +31,12 @@ const modal = function(fromId, message, io, clients){
         }
     });
 };
+const watch = function(fromId, message, io, clients){
+    let watchId = message.split(/\s+/)[1];
+    io.emit('watch',{
+        watch:watchId
+    });
+};
 
 const showConnectedUsers = function(fromId, message, io, clients){
     console.log(clients);
@@ -74,5 +80,6 @@ module.exports = {
     rickroll: rickroll,
     users: showConnectedUsers,
     private: privateMessage,
-    modal: modal
+    modal: modal,
+    watch: watch
 };

@@ -44,6 +44,8 @@ let msg = function(fromId, rawMessage, io) {
     }else if(message.startsWith('/challenge')){
         command.challenge(fromId, message, io, clients);
 
+    }else if(message.startsWith('/watch')){
+        command.watch(fromId, rawMessage, io, clients);
     }else {
         io.emit("chatMessage", {
             message: message,

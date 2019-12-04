@@ -47,7 +47,8 @@ if(player.playing === false){
     }
     socket.emit('player',{
         playing:playing,
-        position : player.currentTime
+        position : player.currentTime,
+        source: player.source
     });
 }
 function seekKeySocket(offset){
@@ -58,7 +59,8 @@ if(player.playing === false){
     }
     socket.emit('player',{
         playing:playing,
-        position : player.currentTime + offset
+        position : player.currentTime + offset,
+        source: player.source
     });
 }
 function seekSocket(time){
@@ -69,7 +71,8 @@ if(player.playing === false){
     }
     socket.emit('player',{
         playing:playing,
-        position : time
+        position : time,
+        source: player.source
     });
 }
 socket.on('playing',function(data){
@@ -81,4 +84,29 @@ socket.on('playing',function(data){
     if(player.currentTime !== data.position && !player.seeking){
             player.currentTime = data.position;
     }
+    if(player.source !== data.source){
+        changeSource(data.source);
+    }
 });
+
+socket.on('watch',function(data){
+    changeSource(data.watch);
+});
+
+function changeSource(source){
+    let provider = '';
+    if(source.includes('vimeo')){
+        provider = 'vimeo';
+    }else{
+        provider = 'youtube';
+    }
+    player.source = {
+        type: 'video',
+        sources: [
+            {
+                src:`${source}`,
+                provider:provider
+            },
+        ],
+    }
+}
