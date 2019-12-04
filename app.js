@@ -5,6 +5,7 @@ const session = require("express-session");
 const ejsHelpers = require("./views/helpers/createModal");
 const chat = require("./modules/chatManager");
 
+
 const db = require("./db/db");
 const ejs = require("ejs");
 const port = 3200;
@@ -12,8 +13,14 @@ const MartinRemote = "192.168.250.60";
 const AlbinRemote = "192.168.250.52";
 const Martin = "192.168.2.199";
 const local = "localhost";
-const host = AlbinRemote;
+const host = MartinRemote;
 const app = express();
+
+const server = app.listen(port, host, function() {
+  console.log(`Server running at http://${host}:${port}/`);
+});
+const io = socket(server);
+
 
 app.get("/users/:username", function(req, res) {
   let user = req.params.username;
@@ -64,7 +71,7 @@ app.post("/dashboard", async function(req, res) {
       helpers: ejsHelpers
     });
     io.on("connection", function(socket) {
-      chat.addClient(socket.id, req.session.username);
+      chat.addClient(socket.id, req.session.username,io);
     });
   } else {
     req.session.username = req.body.username;
@@ -79,7 +86,7 @@ app.post("/req", async function(req, res) {
       req.session.username = req.body.username;
       req.session.password = req.body.password;
       await res.json(req.body.username);
-      chat.addClient(req.body.socket, req.body.username);
+      chat.addClient(req.body.socket, req.body.username,io);
     } else {
       req.session.username = req.body.username;
       req.session.password = req.body.password;
@@ -90,7 +97,7 @@ app.post("/req", async function(req, res) {
     if (req.body.username) {
       req.session.username = req.body.username + "_guest";
       await res.json(req.session.username);
-      chat.addClient(req.body.socket, req.session.username);
+      chat.addClient(req.body.socket, req.session.username,io);
     } else {
       res.json(false);
     }
@@ -102,7 +109,7 @@ app.post("/createAccount", async function(req, res) {
     req.session.username = req.body.username;
     req.session.password = req.body.password;
     await res.json(req.body.username);
-    chat.addClient(req.body.socket, req.body.username);
+    chat.addClient(req.body.socket, req.body.username,io);
   } else {
     req.session.username = req.body.username;
     req.session.password = req.body.password;
@@ -118,7 +125,7 @@ app.get("/", async function(req, res) {
         helpers: ejsHelpers
       });
       io.on("connection", function(socket) {
-        chat.addClient(socket.id, req.session.username);
+        chat.addClient(socket.id, req.session.username,io);
       });
     } else if (!req.session.password) {
       res.render("dashboard.ejs", {
@@ -126,7 +133,7 @@ app.get("/", async function(req, res) {
         helpers: ejsHelpers
       });
       io.on("connection", function(socket) {
-        chat.addClient(socket.id, req.session.username);
+        chat.addClient(socket.id, req.session.username,io);
       });
     } else {
       res.render("error.ejs");
@@ -136,13 +143,11 @@ app.get("/", async function(req, res) {
   }
 });
 
-const server = app.listen(port, host, function() {
-  console.log(`Server running at http://${host}:${port}/`);
-});
+
 
 app.use(express.static("public"));
 
-let io = socket(server);
+
 
 io.on("connection", function(socket) {
   console.log(socket.id);

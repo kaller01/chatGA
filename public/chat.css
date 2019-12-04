@@ -15,9 +15,13 @@
   border: 1px solid black;
 }
 .plyr{
-  width: 100%;
   height: 60vh;
 }
+
+.right-panel{
+  width: 100%;
+}
+
 #output :nth-child(even) {
   background-color: #dddddd;
 }
