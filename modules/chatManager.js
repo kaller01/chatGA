@@ -43,6 +43,9 @@ let msg = function (fromId, rawMessage, io) {
                 case '/modal':
                     command.modal(fromId, message, io, clients);
                     break;
+              case '/watch':
+                command.watch(fromId, rawMessage, io, clients);
+                break;
             }
         } else {
             const message = anchorme(stripHtml(rawMessage));
