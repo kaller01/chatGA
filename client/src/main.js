@@ -6,12 +6,14 @@ import router from './router'
 import VueSocketIO from 'vue-socket.io'
 import SocketIO from 'socket.io-client'
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 Vue.prototype.$user = {
   username: 'not logged in!'
 };
+Vue.prototype.$server = 'http://192.168.250.60:3300/';
 
-export const SocketInstance = SocketIO('http://192.168.2.199:3300/');
+
+export const SocketInstance = SocketIO('http://192.168.250.60:3300/');
 
 Vue.use(new VueSocketIO({
     debug: true,

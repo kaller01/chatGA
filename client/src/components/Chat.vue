@@ -1,50 +1,26 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <h1 class="navbar-brand" href="#" id="displayName">{{this.$user.username}}</h1>
-
-      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        </ul>
-        <ul class="navbar-nav my-2 my-lg-0">
-          <button type="button" class="btn btn-primary mx-2" data-toggle="modal" data-target="#modalLogin">
-            Log in
-          </button>
-          <button type="button" class="btn btn-success mx-2" data-toggle="modal" data-target="#modalCreate">
-            Sign up
-          </button>
-          <button type="button" class="btn btn-secondary mx-2" data-toggle="modal" data-target="#modalGuest">
-            Guest
-          </button>
-        </ul>
+  <div class="wrapper">
+    <div id="chatBoxDiv" class="container">
+      <div @click="play" id="output">
+        <p v-for="messageNew in Arraymessages" v-html="messageNew"></p>
       </div>
-    </nav>
-    <div class="wrapper">
-      <div id="chatBoxDiv" class="container">
-        <div id="output">
-          <p v-for="message in messages" v-html="message"></p>
-        </div>
-        <form class="input-group" id="chatForm">
-          <input
-            class="col-10"
-            type="text"
-            autocomplete="off"
-            placeholder="message"
-            required
-            id="chatInput"
-            maxlength="200"
-            v-model="messageInput"
-          />
-          <button
-            class="btn-primary col-2"
-            id="chatSubmit"
-            @click="send"
-          >Send</button>
-        </form>
-      </div>
+      <form class="input-group" id="chatForm">
+        <input
+          class="col-10"
+          type="text"
+          autocomplete="off"
+          placeholder="message"
+          required
+          id="chatInput"
+          maxlength="200"
+          v-model="messageInput"
+        />
+        <button
+          class="btn-primary col-2"
+          id="chatSubmit"
+          @click="send"
+        >Send</button>
+      </form>
     </div>
   </div>
 </template>
@@ -52,22 +28,12 @@
 <script>
     export default {
         name: "Chat",
+        props: {
+            Arraymessages: Array
+        },
         data() {
             return {
-                messages: ['Connecting...'],
-                messageInput: '',
-                user: {
-                    username: 'not logged in'
-                }
-            }
-        },
-        sockets: {
-            connect: function () {
-                this.messages.push('Connected to socket');
-            },
-            chatMessage: function (data) {
-                console.log(this.$socket.id);
-                this.messages.push(`<strong>${data.username}</strong>: ${data.message}`);
+                messageInput: ''
             }
         },
         methods: {
@@ -76,6 +42,9 @@
                     message: this.messageInput
                 });
                 this.messageInput = '';
+            },
+            play: function () {
+
             }
         }
     }

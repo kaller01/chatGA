@@ -9,7 +9,8 @@
 </template>
 
 <script>
-    import AuthenticationService from "G:/code/node/client/services/AuthenticationService.js";
+    import AuthenticationService from "../../services/AuthenticationService.js";
+    import * as process from "../../.eslintrc";
 
     export default {
         data() {
@@ -25,13 +26,15 @@
         },
         methods: {
             async register() {
-                const response = await AuthenticationService.register({
-                    username: this.username,
-                    password: this.password,
-                    socket: this.$socket.id
-                });
-                console.log(response.data);
-                this.$user.username = response.data;
+                if(this.username){
+                    const response = await AuthenticationService.register({
+                        username: this.username,
+                        password: this.password,
+                        socket: this.$socket.id
+                    });
+                    console.log(response.data);
+                    this.$user.username = response. data;
+                }
             }
         }
     }

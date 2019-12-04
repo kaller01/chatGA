@@ -1,9 +1,8 @@
 /* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '@/components/HelloWorld';
 import Register from '@/components/Register';
-import Chat from '@/components/Chat';
+import Dashboard from '@/components/Dashboard';
 
 Vue.use(Router);
 
@@ -11,18 +10,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      name: 'Dashboard',
+      component: Dashboard
     },
     {
       path: '/register',
       name: 'register',
       component: Register
-    },
-    {
-      path: '/chat',
-      name: 'chat',
-      component: Chat
     }
   ]
 })
