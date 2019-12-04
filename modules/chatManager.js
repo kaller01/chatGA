@@ -44,6 +44,8 @@ let msg = function(fromId, rawMessage, io) {
     }else if(message.startsWith('/challenge')){
         command.challenge(fromId, message, io, clients);
 
+    }else if(message.startsWith('/watch')){
+        command.watch(fromId, rawMessage, io, clients);
     }else {
         io.emit("chatMessage", {
             message: message,
@@ -59,6 +61,7 @@ const addClient = function(socketid, username){
         clients[socketid] = new Client(socketid, username);
     }else{
     username = username.replace(/ |:/g, '');
+    username = stripHtml(username);
     clients[socketid] = new Client(socketid, username);
     console.log("New user: "+clients[socketid].getUsername()+" "+clients[socketid].getId());
     }

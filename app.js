@@ -12,7 +12,7 @@ const MartinRemote = "192.168.250.60";
 const AlbinRemote = "192.168.250.52";
 const Martin = "192.168.2.199";
 const local = "localhost";
-const host = MartinRemote;
+const host = AlbinRemote;
 const app = express();
 
 app.get("/users/:username", function(req, res) {
@@ -54,12 +54,11 @@ app.get("/login", (req, res, next) => {
 app.use(express.json()); // to support JSON-encoded bodies
 app.use(express.urlencoded()); // to support URL-encoded bodies
 
-
 app.post("/dashboard", async function(req, res) {
   if (await db.login(req.body.username, req.body.password)) {
     req.session.username = req.body.username;
     req.session.password = req.body.password;
-    res.render("user.ejs", {
+    res.render("dashboard.ejs", {
       username: req.session.username,
       password: req.session.password,
       helpers: ejsHelpers
@@ -92,7 +91,7 @@ app.post("/req", async function(req, res) {
       req.session.username = req.body.username + "_guest";
       await res.json(req.session.username);
       chat.addClient(req.body.socket, req.session.username);
-    }else{
+    } else {
       res.json(false);
     }
   }
@@ -111,10 +110,10 @@ app.post("/createAccount", async function(req, res) {
   }
 });
 
-app.get("/dashboard", async function(req, res) {
+app.get("/", async function(req, res) {
   if (req.session.username) {
-    if (await db.login(req.session.username, req.session.password)) {
-      res.render("user.ejs", {
+    if (await db.login(req.session.username, req.session.password) && req.session.password) {
+      res.render("dashboard.ejs", {
         username: req.session.username,
         helpers: ejsHelpers
       });
@@ -122,7 +121,7 @@ app.get("/dashboard", async function(req, res) {
         chat.addClient(socket.id, req.session.username);
       });
     } else if (!req.session.password) {
-      res.render("user.ejs", {
+      res.render("dashboard.ejs", {
         username: req.session.username,
         helpers: ejsHelpers
       });
@@ -133,7 +132,7 @@ app.get("/dashboard", async function(req, res) {
       res.render("error.ejs");
     }
   } else {
-    res.render("user.ejs", { username: null, helpers: ejsHelpers });
+    res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
   }
 });
 
