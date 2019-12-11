@@ -1,9 +1,17 @@
 chatForm.addEventListener("submit", function(event) {
     event.preventDefault();
-    socket.emit("chatMessage", {
-        message: chatInput.value,
-        username: username.value
-    });
+    const user = $("#chatInput2").val();
+    if(user==='all'){
+        socket.emit("chatMessage", {
+            message: chatInput.value
+        });
+    } else {
+        socket.emit("message", {
+            message: chatInput.value,
+            channel: user
+        });
+    }
+
     if (messageHistory[messageHistory.length - 1] !== chatInput.value) {
         messageHistory.push(chatInput.value);
     }

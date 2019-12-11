@@ -3,12 +3,22 @@
         <div id="output"></div>
         <form class="input-group" id="chatForm">
             <input
-                    class="col-10"
+                    class="col-8"
                     type="text"
                     autocomplete="off"
                     placeholder="message"
                     required
                     id="chatInput"
+                    maxlength="200"
+            />
+            <input
+                    class="col-2"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="to user..."
+                    required
+                    value="all"
+                    id="chatInput2"
                     maxlength="200"
             />
             <input
