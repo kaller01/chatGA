@@ -41,7 +41,7 @@ const createAccount = async (req,res)=>{
     }
 };
 
-const loginAccount = async (req,res)=>{
+const loginAccount = async (req,res,io)=>{
     if (req.body.password) {
         if (await db.login(req.body.username, req.body.password)) {
             req.session.username = req.body.username;

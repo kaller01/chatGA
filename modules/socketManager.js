@@ -8,6 +8,10 @@ const manager = function(socket, io){
     socket.on("chatMessage", function(data) {
         chat.msg(socket.id, data.message, io);
     });
+    socket.on("message", function(data) {
+        //from socketid, channel, message
+        console.log(data, socket.id);
+    });
     socket.on('login', function (username) {
         chat.addClient(socket.id,username+'_guest');
     });

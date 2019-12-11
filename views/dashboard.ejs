@@ -24,12 +24,9 @@
 <%- include('dashboard/navbar')%>
 <%- include('dashboard/chat')%>
 
-
 <%- helpers.createModal('Login','Login to DB',include('dashboard/modalbody/login.ejs'),'Login') %>
 <%- helpers.createModal('Guest','Login as guest',include('dashboard/modalbody/guest.ejs'),'Create') %>
 <%- helpers.createModal('Create','Create Account',include('dashboard/modalbody/create.ejs'),'Login') %>
-
-
 
 <script>
     <%- include('dashboard/main.js') %>
