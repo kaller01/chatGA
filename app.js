@@ -148,7 +148,6 @@ app.get("/", async function(req, res) {
 app.use(express.static("public"));
 
 
-
 io.on("connection", function(socket) {
   console.log(socket.id);
   socketManager.manager(socket, io);

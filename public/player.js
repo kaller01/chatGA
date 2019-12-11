@@ -1,5 +1,6 @@
 const player = new Plyr('#player',{
     clickToPlay:false,
+    autoplay:true,
     listeners: {
     seek: function (e) {
         e.preventDefault();
@@ -76,21 +77,46 @@ if(player.playing === false){
     });
 }
 socket.on('playing',function(data){
-    if(data.playing === true && player.playing === false){
-        player.play();
-    }else if(data.playing === false && player.playing === true){
-        player.pause();
-    }
-    if(player.currentTime !== data.position && !player.seeking){
-            player.currentTime = data.position;
-    }
-    if(player.source !== data.source){
-        changeSource(data.source);
-    }
+    setPlayer(data);
 });
+
+player.on('ended', function(){
+    socket.emit('player',{
+        playing:false,
+        position : 0,
+        source: player.source
+    });
+});
+
+function setPlayer(data){
+    if(player.source !== data.source){
+        changeSource(data.source, data.position);
+    }
+    do{
+    if(data.playing === true && player.playing === false && player.ready){
+        setTimeout(() => {
+            player.play();
+        }, 100);
+    }else if(data.playing === false && player.playing === true && player.ready){
+        setTimeout(() => {
+            player.pause();
+        }, 100);
+    }
+        if(player.currentTime !== data.position && player.ready){
+            setTimeout(() => {
+                player.currentTime = data.position;           
+            }, 1000);
+        }
+        }while(!player.ready)
+}
 
 socket.on('watch',function(data){
     changeSource(data.watch);
+    socket.emit('player',{
+        playing: true,
+        position : 0,
+        source: data.watch
+    });
 });
 
 function changeSource(source){
@@ -110,3 +136,12 @@ function changeSource(source){
         ],
     }
 }
+
+$(window).bind("load", function(){
+    setTimeout(() => {
+        socket.emit('getPlayerInfo');
+    }, 1000);
+});
+socket.on('playerInfo', function(data){
+    setPlayer(data);
+});
