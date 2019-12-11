@@ -61,7 +61,7 @@ const addClient = function (socketid, username, io) {
         username = username.replace(/ |:/g, '');
         username = stripHtml(username);
         clients[socketid] = new Client(socketid, username);
-        console.log("New user: " + clients[socketid].getUsername() + " " + clients[socketid].getId());
+        // console.log("New user: " + clients[socketid].getUsername() + " " + clients[socketid].getId());
         updateClientList(clients,io);
 };
 

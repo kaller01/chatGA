@@ -1,5 +1,5 @@
 const chat = require("./chatManager");
-
+const player = require("./playerManager");
 
 const manager = function(socket, io){
     socket.on("disconnect", function() {
@@ -15,24 +15,31 @@ const manager = function(socket, io){
     socket.on('login', function (username) {
         chat.addClient(socket.id,username+'_guest');
     });
-    socket.on('loginAccount',function(data){
-        chat.login(socket.id, io, data.username, data.password);
+  socket.on("player", function(data) {
+    player.playing = data.playing;
+    player.position = data.position;
+    player.source = data.source;
+    clearInterval(player.timer);
+    if (data.playing) {
+      player.timer = setInterval(function() {
+        player.position++;
+      }, 1000);
+    }
+    io.emit("playing", {
+      playing: data.playing,
+      position: data.position,
+      source: data.source
+      });
+  });
+  socket.on("getPlayerInfo", function() {
+    socket.emit("playerInfo", {
+      playing: player.playing,
+      position: player.position,
+      source: player.source
     });
-    socket.on('createAccount',(data)=> {
-        chat.createUser(socket.id,io,data.username,data.password);
-    });
-    socket.on('player',function(data){
-        playing = data.playing;
-        position = data.position;
-        source = data.source;
-        io.emit('playing',{
-            playing:data.playing,
-            position:data.position,
-            source:data.source
-        });
-    });
+  });
 };
 
 module.exports = {
-    manager: manager
+  manager: manager
 };
