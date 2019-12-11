@@ -13,7 +13,7 @@ const MartinRemote = "192.168.250.60";
 const AlbinRemote = "192.168.250.52";
 const Martin = "192.168.2.199";
 const local = "localhost";
-const host = MartinRemote;
+const host = AlbinRemote;
 const app = express();
 
 const server = app.listen(port, host, function() {
