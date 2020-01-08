@@ -1,4 +1,5 @@
 const command = require("./commands");
+const dev = require("./dev");
 const stripHtml = require("string-strip-html");
 const anchorme = require("anchorme").default;
 const db = require('../db/db');
@@ -21,7 +22,8 @@ let clients = [];
 let msg = function (fromId, rawMessage, io) {
     //Uses stripHtml to remove all html tags and then uses anchrome to put <a> around links
     const message = anchorme(stripHtml(rawMessage));
-    db.addMessage(fromId,'to',message,'123');
+
+
 
     if (typeof clients[fromId] == 'undefined') {
         io.to(fromId).emit('chatMessage', {
@@ -29,6 +31,13 @@ let msg = function (fromId, rawMessage, io) {
             username: 'system'
         });
     } else {
+        if(dev.logMessages){
+            let fromUser = clients[fromId].getUsername();
+            let date = Date.now();
+            db.addMessage(fromUser,'all',message,date);
+        }
+
+
         //checks for /msg
         if (rawMessage.startsWith('/')) {
             switch (rawMessage.split(" ")[0]) {

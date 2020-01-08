@@ -87,7 +87,7 @@ function compareHash(password, hash) {
 }
 
 const addUser = (username, password)=> {
-    return new Promise(async (resolve,reject)=>{
+    return new Promise(async (resolve)=>{
         const hash = await encrypt(password);
         const query = `INSERT INTO users values (null,'${username}','${hash}','${Date.now()}');`;
         db.run(query, function (err) {
@@ -120,8 +120,8 @@ const login = function (username, password) {
     });
 };
 
-const addMessage = function(from, to, message, date){
-        db.run("INSERT INTO messages VALUES (null,?,?,?,?)", from,to,message,date);
+const addMessage = function(fromUser, to, message, date){
+        db.run("INSERT INTO messages VALUES (null,?,?,?,?)", fromUser,to,message,date);
 };
 
 module.exports = {

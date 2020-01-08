@@ -6,17 +6,13 @@ const router = require("./modules/router");
 const db = require("./db/db");
 const ejs = require("ejs");
 const app = express();
-
-const port = 3200;
-const MartinRemote = "192.168.250.60";
-const AlbinRemote = "192.168.250.52";
-const Martin = "192.168.2.199";
-const local = "localhost";
-const host = MartinRemote;
+const dev = require("./modules/dev");
 
 
-const server = app.listen(port, host, function() {
-  console.log(`Server running at http://${host}:${port}/`);
+
+
+const server = app.listen(dev.port, dev.host, function() {
+  console.log(`Server running at http://${dev.host}:${dev.port}/`);
 });
 const io = socket(server);
 app.set("view engine", "ejs");
