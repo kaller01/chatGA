@@ -120,12 +120,17 @@ const login = function (username, password) {
     });
 };
 
+const addMessage = function(from, to, message, date){
+        db.run("INSERT INTO messages VALUES (null,?,?,?,?)", from,to,message,date);
+};
+
 module.exports = {
     login: login,
     addUser: addUser,
     getUser: getAllByUsername,
     getAllUsers: getAll,
-    searchByUsername: searchByUsername
+    searchByUsername: searchByUsername,
+    addMessage,
 };
 
 
