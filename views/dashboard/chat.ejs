@@ -1,5 +1,5 @@
 <div class="wrapper">
-    <div id="chatBoxDiv" class="container">
+    <div id="chatBoxDiv" class="col-6">
         <div id="output"></div>
         <form class="input-group" id="chatForm">
             <input
@@ -52,9 +52,13 @@
             </div>
         </div>
     </div>
-    <div class="right-panel">
+    <div class="right-panel d-flex col-6">
         <div id="player" data-plyr-provider="vimeo" data-plyr-embed-id="148751763"></div>
-        <div id="clients"></div>
+        <div class="clientlist">
+            <h3>Users connected:</h3>
+            <div id="clients">
+            </div>
+        </div>
     </div>
 </div>
 

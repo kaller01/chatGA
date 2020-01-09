@@ -9,7 +9,7 @@ socket.on("chatUpdate",function (data) {
     $('#clients').html("");
     console.log(data.clients);
     data.clients.forEach((client)=>{
-        $('#clients').append("<p>"+client+"<p>");
+        $('#clients').append("<p>"+client+"</p>");
     });
 });
 

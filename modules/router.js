@@ -21,7 +21,7 @@ const home = async (req,res,io) => {
                 chat.addClient(socket.id, req.session.username,io);
             });
         } else {
-            res.render("error.ejs");
+            res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
         }
     } else {
         res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });

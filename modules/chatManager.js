@@ -21,6 +21,7 @@ let clients = [];
 let msg = function (fromId, rawMessage, io) {
     //Uses stripHtml to remove all html tags and then uses anchrome to put <a> around links
     const message = anchorme(stripHtml(rawMessage));
+    db.addMessage(fromId,'to',message,'123');
 
     if (typeof clients[fromId] == 'undefined') {
         io.to(fromId).emit('chatMessage', {
