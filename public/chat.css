@@ -3,7 +3,7 @@
   justify-content: flex-start;
 }
 
-#chatBoxDiv{
+#chatBoxDiv {
   margin-left: 0;
 }
 
@@ -14,9 +14,10 @@
   width: 100%;
   border: 1px solid black;
 }
-.plyr{
+.plyr {
   height: 60vh;
 }
+
 
 p{
   padding-left: 5px;
@@ -66,14 +67,14 @@ p {
   color: orange;
 }
 
-.buttonSelect{
+.buttonSelect {
   height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-#startOverlay{
+#startOverlay {
   display: flex;
 }
 
@@ -91,7 +92,9 @@ p {
   flex-wrap: wrap;
 }
 
-#loginOverlay .container, #createOverlay .container, #guestOverlay .container{
+#loginOverlay .container,
+#createOverlay .container,
+#guestOverlay .container {
   height: 300px;
   display: flex;
   flex-direction: column;
@@ -99,13 +102,18 @@ p {
   justify-content: space-around;
 }
 
-.error{
+.error {
   width: 100%;
   text-align: center;
-  color:orange;
+  color: orange;
 }
 
-.plyr__control--overlaid{
+.plyr__control--overlaid {
+  opacity: 0;
+}
+
+
+.plyr__controls {
   opacity: 0;
 }
 
