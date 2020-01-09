@@ -11,6 +11,13 @@ socket.on("chatUpdate",function (data) {
     data.clients.forEach((client)=>{
         $('#clients').append("<p>"+client+"</p>");
     });
+    data.messages.forEach(message=>{
+        $("#output").append(
+            $("<p>")
+                .append($("<strong>").text(message.sender + ": "))
+                .append($("<span>").html(message.message))
+        );
+    });
 });
 
 socket.on("rickroll", function() {

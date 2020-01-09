@@ -6,7 +6,7 @@ const local = "localhost";
 
 
 module.exports = {
-    host: Martin,
+    host: MartinRemote,
     port,
     logMessages: true
 };

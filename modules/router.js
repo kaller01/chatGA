@@ -19,6 +19,7 @@ const home = async (req,res,io) => {
             });
             io.on("connection", function(socket) {
                 chat.addClient(socket.id, req.session.username,io);
+                chat.getLastMessages(socket.id,io);
             });
         } else {
             res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });

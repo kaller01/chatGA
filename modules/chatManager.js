@@ -75,15 +75,22 @@ const addClient = function (socketid, username, io) {
         updateClientList(clients,io);
 };
 
-const updateClientList = (clients,io) => {
+const updateClientList = async (clients,io) => {
     let clientList = [];
     Object.keys(clients).forEach(function (id) {
         clientList.push(clients[id].getUsername());
     });
     io.emit("chatUpdate", {
-        clients: clientList
+        clients: clientList,
     });
     console.log(clients);
+};
+
+const getLastMessages = async (id,io)=>{
+    const messages = await db.getLastMessages('all');
+    io.to(id).emit('lastMessages', {
+        messages
+    });
 };
 
 const disconnectClient = function (socketid,io) {
@@ -126,5 +133,6 @@ module.exports = {
     addClient: addClient,
     disconnect: disconnectClient,
     login: logintoDB,
-    createUser: createUserDB
+    createUser: createUserDB,
+    getLastMessages
 };

@@ -124,6 +124,15 @@ const addMessage = function(fromUser, to, message, date){
         db.run("INSERT INTO messages VALUES (null,?,?,?,?)", fromUser,to,message,date);
 };
 
+const getLastMessages = async (receiver)=>{
+    return new Promise(resolve => {
+        db.all("SELECT * from messages where receiver=? order by id desc limit 10", receiver, function(err, result) {
+            resolve(result);
+        });
+    });
+
+};
+
 module.exports = {
     login: login,
     addUser: addUser,
@@ -131,6 +140,7 @@ module.exports = {
     getAllUsers: getAll,
     searchByUsername: searchByUsername,
     addMessage,
+    getLastMessages
 };
 
 

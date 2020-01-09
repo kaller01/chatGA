@@ -8,9 +8,6 @@ const ejs = require("ejs");
 const app = express();
 const dev = require("./modules/dev");
 
-
-
-
 const server = app.listen(dev.port, dev.host, function() {
   console.log(`Server running at http://${dev.host}:${dev.port}/`);
 });
@@ -32,6 +29,10 @@ app.post("/api/login", async function(req, res) {
 });
 app.post("/api/create", async function(req, res) {
   await router.createAccount(req,res);
+});
+
+app.post("/api/messages", async function(req, res) {
+    await res.json(await db.getLastMessages('all'));
 });
 
 app.get("/", async function(req, res) {
