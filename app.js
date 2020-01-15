@@ -11,6 +11,7 @@ const dev = require("./modules/dev");
 const server = app.listen(dev.port, dev.host, function() {
   console.log(`Server running at http://${dev.host}:${dev.port}/`);
 });
+
 const io = socket(server);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
