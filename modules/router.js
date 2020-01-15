@@ -11,6 +11,7 @@ const home = async (req,res,io) => {
             });
             io.on("connection", function(socket) {
                 chat.addClient(socket.id, req.session.username,io);
+                chat.getLastMessages(socket.id,io);
             });
         } else if (!req.session.password) {
             res.render("dashboard.ejs", {
@@ -48,6 +49,7 @@ const loginAccount = async (req,res,io)=>{
             req.session.username = req.body.username;
             req.session.password = req.body.password;
             await res.json(req.body.username);
+            chat.getLastMessages(req.body.socket,io);
             chat.addClient(req.body.socket, req.body.username,io);
         } else {
             req.session.username = req.body.username;
@@ -58,8 +60,10 @@ const loginAccount = async (req,res,io)=>{
         console.log(req.body.username);
         if (req.body.username) {
             req.session.username = req.body.username + "_guest";
+            req.session.password = "";
             await res.json(req.session.username);
             chat.addClient(req.body.socket, req.session.username,io);
+            chat.getLastMessages(req.body.socket,io);
         } else {
             res.json(false);
         }

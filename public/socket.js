@@ -11,6 +11,11 @@ socket.on("chatUpdate",function (data) {
     data.clients.forEach((client)=>{
         $('#clients').append("<p>"+client+"</p>");
     });
+});
+
+socket.on("lastMessages", data =>{
+    $('#output').html("");
+    data.messages.reverse();
     data.messages.forEach(message=>{
         $("#output").append(
             $("<p>")
