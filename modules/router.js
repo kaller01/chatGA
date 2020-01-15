@@ -2,27 +2,29 @@ const db = require("./../db/db");
 const chat = require("./chatManager");
 const ejsHelpers = require("./../views/helpers/createModal");
 
-const home = async (req, res, io) => {
-  if (req.session.username) {
-    if (
-      (await db.login(req.session.username, req.session.password)) &&
-      req.session.password
-    ) {
-      res.render("dashboard.ejs", {
-        username: req.session.username,
-        helpers: ejsHelpers
-      });
-      io.on("connection", function(socket) {
-        chat.addClient(socket.id, req.session.username, io);
-      });
-    } else if (!req.session.password) {
-      res.render("dashboard.ejs", {
-        username: req.session.username,
-        helpers: ejsHelpers
-      });
-      io.on("connection", function(socket) {
-        chat.addClient(socket.id, req.session.username, io);
-      });
+const home = async (req,res,io) => {
+    if (req.session.username) {
+        if (await db.login(req.session.username, req.session.password) && req.session.password) {
+            res.render("dashboard.ejs", {
+                username: req.session.username,
+                helpers: ejsHelpers
+            });
+            io.on("connection", function(socket) {
+                chat.addClient(socket.id, req.session.username,io);
+                chat.getLastMessages(socket.id,io);
+            });
+        } else if (!req.session.password) {
+            res.render("dashboard.ejs", {
+                username: req.session.username,
+                helpers: ejsHelpers
+            });
+            io.on("connection", function(socket) {
+                chat.addClient(socket.id, req.session.username,io);
+                chat.getLastMessages(socket.id,io);
+            });
+        } else {
+            res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
+        }
     } else {
       res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
     }
@@ -60,6 +62,7 @@ const loginAccount = async (req, res, io) => {
       req.session.username = req.body.username;
       req.session.password = req.body.password;
       await res.json({ username: req.body.username });
+      chat.getLastMessages(req.body.socket,io);
       chat.addClient(req.body.socket, req.body.username, io);
     } else {
       req.session.username = req.body.username;
@@ -73,8 +76,10 @@ const loginAccount = async (req, res, io) => {
         await res.json({ error: "Illegal characters used" });
       } else {
         req.session.username = req.body.username + "_guest";
+        req.session.password = "";
         await res.json({ username: req.session.username });
         chat.addClient(req.body.socket, req.session.username, io);
+        chat.getLastMessages(req.body.socket,io);
       }
     } else {
       res.json({ error: "Username does not meet standards" });

@@ -1,6 +1,7 @@
 const chat = require("./chatManager");
 const player = require("./playerManager");
 
+
 const manager = function(socket, io) {
   socket.on("disconnect", function() {
     chat.disconnect(socket.id, io);
@@ -14,6 +15,10 @@ const manager = function(socket, io) {
   socket.on("login", function(username) {
     chat.addClient(socket.id, username + "_guest");
   });
+    socket.on('lastMessages',()=>{
+       chat.getLastMessages(socket.id,io);
+    });
+
   socket.on("player", function(data) {
     player.playing = data.playing;
     player.position = data.position;

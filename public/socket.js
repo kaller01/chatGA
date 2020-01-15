@@ -13,6 +13,18 @@ socket.on("chatUpdate",function (data) {
     });
 });
 
+socket.on("lastMessages", data =>{
+    $('#output').html("");
+    data.messages.reverse();
+    data.messages.forEach(message=>{
+        $("#output").append(
+            $("<p>")
+                .append($("<strong>").text(message.sender + ": "))
+                .append($("<span>").html(message.message))
+        );
+    });
+});
+
 socket.on("rickroll", function() {
     window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
 });

@@ -6,18 +6,12 @@ const router = require("./modules/router");
 const db = require("./db/db");
 const ejs = require("ejs");
 const app = express();
+const dev = require("./modules/dev");
 
-const port = 3200;
-const MartinRemote = "192.168.250.60";
-const AlbinRemote = "192.168.250.52";
-const Martin = "192.168.2.199";
-const local = "localhost";
-const host = AlbinRemote;
-
-
-const server = app.listen(port, host, function() {
-  console.log(`Server running at http://${host}:${port}/`);
+const server = app.listen(dev.port, dev.host, function() {
+  console.log(`Server running at http://${dev.host}:${dev.port}/`);
 });
+
 const io = socket(server);
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -36,6 +30,10 @@ app.post("/api/login", async function(req, res) {
 });
 app.post("/api/create", async function(req, res) {
   await router.createAccount(req,res);
+});
+
+app.post("/api/messages", async function(req, res) {
+    await res.json(await db.getLastMessages('all'));
 });
 
 app.get("/", async function(req, res) {
