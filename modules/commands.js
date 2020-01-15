@@ -75,11 +75,29 @@ const privateMessage = function(fromId, message, io, clients){
     });
 };
 
+
+const getSocketByUsername = (username, clients)=>{
+    return new Promise((resolve) => {
+        Object.keys(clients).forEach(function (id) {
+            if(clients[id].getUsername()===username){
+                resolve(id);
+            }
+        });
+        resolve(false);
+    })
+};
+
+const getUsernameBySocket = (socket, clients)=>{
+    return clients[socket];
+};
+
 module.exports = {
     challenge: challenge,
-    rickroll: rickroll,
+    rickroll,
     users: showConnectedUsers,
     private: privateMessage,
-    modal: modal,
-    watch: watch
+    modal,
+    watch,
+    getSocketByUsername,
+    getUsernameBySocket
 };

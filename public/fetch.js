@@ -20,3 +20,18 @@ async function login(url, username, password, id, error) {
         $("#error" + id).show();
     }
 }
+
+const getLastMessages = async ()=>{
+    const url = '/api/messages/';
+    const data = {};
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    };
+    const response = await fetch(url, options);
+    const json = await response.json();
+    console.log(json);
+};
