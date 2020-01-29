@@ -18,7 +18,8 @@
     "link-preview-generator": "0.0.3",
     "socket.io": "^2.3.0",
     "sqlite3": "^4.1.0",
-    "string-strip-html": "^4.3.4"
+    "string-strip-html": "^4.3.4",
+    "url-exists": "^1.0.3"
   },
   "devDependencies": {
     "ejs": "^2.7.4",

@@ -1,38 +1,39 @@
 const linkPreviewGenerator = require("link-preview-generator");
-async function linkPreview(message, io) {
-  link = await messageToLink(message);
-  if (link) {
-    await linkPreviewGenerator(link).then(preview => {
-      io.emit("linkPreview", {
-        link: link,
-        message: message,
-        title: preview.title,
-        description: preview.description,
-        domain: preview.domain,
-        img: preview.img
-      });
-    });
-  }
+const urlExists = require("url-exists");
+
+async function linkPreview(link, io) {
+  urlExists(link, async function(err, exists) {
+    if (exists) {
+      const preview = await linkPreviewGenerator(link).catch(console.error);
+      if (preview) {
+        io.emit("linkPreview", {
+          link: link,
+          title: preview.title,
+          description: preview.description,
+          domain: preview.domain,
+          img: preview.img
+        });
+      }
+    }
+  });
 }
 
-function messageToLink(link) {
+async function messageToLink(link, io) {
   if (link.includes("</a>")) {
     let links = link.split('"');
     links = links.filter(
       link =>
         link.includes("http") && !link.includes("</a>") && !link.includes("<a")
     );
-    return links[0];
-  } else {
-    return false;
+    linkPreview(links[0], io);
   }
 }
-// console.log(
-//   link(
-//     `http:// <a href="http://youtube.com" >youtube.com</a> http:// <a href="http://youtube.com" >youtube.com</a>`
-//   )
+// linkPreview(
+//   `http:// <a href="http://youtube.com" >youtube.com</a> http:// <a href="http://youtube.com" >youtube.com</a>`,
+//   0
 // );
 
 module.exports = {
-  linkPreview
+  linkPreview,
+  messageToLink
 };

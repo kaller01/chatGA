@@ -54,6 +54,7 @@ socket.on("chatMessage", function(data) {
       $("<p>")
         .append($("<strong>").text(data.username + ": "))
         .append($("<span>").html(data.message))
+        .addClass("messages")
     );
   }
   output.scrollBy({
@@ -62,7 +63,17 @@ socket.on("chatMessage", function(data) {
 });
 
 socket.on("linkPreview", function(data) {
-  console.log($(`span[html~='${data.link}']`).html());
+  const clientMessage = $(".messages")
+    .children()
+    .eq(1)
+    .html();
+  if (clientMessage.includes(data.link)) {
+    console.log("hej");
+    $(".messages")
+      .children()
+      .eq(1)
+      .html(`${clientMessage} hej`);
+  }
   console.log(data);
 });
 
