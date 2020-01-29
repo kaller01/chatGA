@@ -103,7 +103,10 @@ const updateClientList = async (clients,io) => {
     console.log(clients);
 };
 
-const getLastMessages = async (id,io)=>{
+const getLastMessages = async (sender=null,to='all',id,io)=>{
+    if(sender){
+        const messages = await db.getLastMessages('all');
+    }
     const messages = await db.getLastMessages('all');
     io.to(id).emit('lastMessages', {
         messages

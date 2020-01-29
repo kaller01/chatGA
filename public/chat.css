@@ -6,15 +6,6 @@
 #chatBoxDiv {
   margin-left: 0;
 }
-
-#output {
-  height: 80vh;
-  overflow: auto;
-  white-space: pre-line;
-  width: 100%;
-  border: 1px solid black;
-}
-
 .chat-tabs{
   width: 100%;
 }
@@ -22,6 +13,18 @@
 .chat-tab{
   background-color: pink;
   border: 1px solid black;
+}
+
+.chat{
+  height: 80vh;
+  overflow: auto;
+  white-space: pre-line;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.chat p:nth-child(even) {
+  background-color: #dddddd;
 }
 
 .plyr {
@@ -46,10 +49,6 @@ p{
   padding: 5px;
   border: 1px solid black;
   height: 20vh;
-}
-
-#output p:nth-child(even) {
-  background-color: #dddddd;
 }
 
 .clientlist p:nth-child(even) {
@@ -122,7 +121,10 @@ p {
   opacity: 0;
 }
 
-
 .plyr__controls {
   opacity: 0;
+}
+
+#mainchat-tab{
+  width: 175px;
 }
