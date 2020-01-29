@@ -28,9 +28,6 @@ const home = async (req, res, io) => {
     } else {
       res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
     }
-  } else {
-    res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
-  }
 };
 
 const createAccount = async (req, res, io) => {

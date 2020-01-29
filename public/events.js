@@ -1,13 +1,29 @@
-chatForm.addEventListener("submit", function(event) {
+let sendTo = "all";
+
+window.addEventListener("DOMSubtreeModified",()=>{
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        let user = e.target.attributes.id.value.replace("-tab","");
+        if(sendTo!==user){
+            console.log("Changeconvo", user);
+            sendTo=user;
+        }
+    });
+});
+
+chatForm.addEventListener("submit", function (event) {
     event.preventDefault();
-    const user = $("#chatInput2").val();
-    if(user==='all'){
+    // const user = $("#chatInput2").val();
+    const user = sendTo;
+    let message = chatInput.value;
+    if (user === 'all') {
         socket.emit("chatMessage", {
-            message: chatInput.value
+            message
         });
     } else {
-        socket.emit("message", {
-            message: chatInput.value,
+        message = "/msg " + user + " " + message;
+        newConversation(user);
+        socket.emit("chatMessage", {
+            message,
             channel: user
         });
     }
@@ -36,7 +52,7 @@ $("#chatForm").keydown(e => {
     }
 });
 
-$("#exampleModal").on("click", function(e) {
+$("#exampleModal").on("click", function (e) {
     $("#modal-body").html("");
     $("#exampleModal").modal("hide");
 });
@@ -44,15 +60,19 @@ $("#exampleModal").on("click", function(e) {
 function setCaretPosition(ctrl, pos) {
     // Modern browsers
     if (ctrl.setSelectionRange) {
-      ctrl.focus();
-      ctrl.setSelectionRange(pos, pos);
-    
-    // IE8 and below
+        ctrl.focus();
+        ctrl.setSelectionRange(pos, pos);
+
+        // IE8 and below
     } else if (ctrl.createTextRange) {
-      var range = ctrl.createTextRange();
-      range.collapse(true);
-      range.moveEnd('character', pos);
-      range.moveStart('character', pos);
-      range.select();
+        var range = ctrl.createTextRange();
+        range.collapse(true);
+        range.moveEnd('character', pos);
+        range.moveStart('character', pos);
+        range.select();
     }
-  }
+}
+
+
+
+
