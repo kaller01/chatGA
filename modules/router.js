@@ -25,9 +25,10 @@ const home = async (req, res, io) => {
         chat.addClient(socket.id, req.session.username, io);
         chat.getLastMessages(socket.id, io);
       });
-    } else {
-      res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
     }
+  } else {
+    res.render("dashboard.ejs", { username: null, helpers: ejsHelpers });
+  }
 };
 
 const createAccount = async (req, res, io) => {
