@@ -3,6 +3,7 @@ const dev = require("./dev");
 const stripHtml = require("string-strip-html");
 const anchorme = require("anchorme").default;
 const db = require("../db/db");
+const linkPreview = require("./link");
 
 //Object Client
 let Client = function(socketid, name) {
@@ -76,6 +77,7 @@ let msg = function(fromId, rawMessage, io) {
         }
       } else {
         const message = anchorme(stripHtml(rawMessage));
+        linkPreview.messageToLink(message, io).catch(console.error);
         io.emit("chatMessage", {
           message: message,
           username: clients[fromId].getUsername()
@@ -102,14 +104,14 @@ const updateClientList = async (clients, io) => {
   // console.log(clients);
 };
 
-const getLastMessages = async (sender=null,to='all',id,io)=>{
-    if(sender){
-        const messages = await db.getLastMessages('all');
-    }
-    const messages = await db.getLastMessages('all');
-    io.to(id).emit('lastMessages', {
-        messages
-    });
+const getLastMessages = async (id, io, sender = null, to = "all") => {
+  if (sender) {
+    const messages = await db.getLastMessages("all");
+  }
+  const messages = await db.getLastMessages("all");
+  io.to(id).emit("lastMessages", {
+    messages
+  });
 };
 
 const disconnectClient = function(socketid, io) {
