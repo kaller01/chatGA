@@ -41,12 +41,14 @@ socket.on("chatMessage", function(data) {
         $("<p>")
           .append($("<strong>").text(data.username + ": "))
           .append($("<span>").html(data.message))
+          .addClass("messages")
       );
     } else if (data.private === "from") {
       $("#" + data.receiver + "-output").append(
         $("<p>")
           .append($("<strong>").text(data.username + ": "))
           .append($("<span>").html(data.message))
+          .addClass("messages")
       );
     }
   } else {
@@ -63,10 +65,15 @@ socket.on("chatMessage", function(data) {
 });
 
 socket.on("linkPreview", function(data) {
-  const clientMessage = $(".messages")
-    .children()
-    .eq(1)
-    .html();
+  const clientMessage = document.getElementsByClassName("messages");
+  for (let index = 0; index < clientMessage.length; index++) {
+    console.log(clientMessage[index]);
+  }
+  //   console.log(clientMessage);
+  //   $(".messages")
+  //     .children()
+  //     .eq(1)
+  //     .html();
   if (clientMessage.includes(data.link)) {
     console.log("hej");
     $(".messages")

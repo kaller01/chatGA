@@ -1,3 +1,5 @@
+const linkPreview = require("./link");
+
 const challenge = function(fromId, message, io, clients) {
   let receiver = message.split(/\s+/)[1];
   Object.keys(clients).forEach(function(id) {
@@ -60,6 +62,7 @@ const privateMessage = function(fromId, message, io, clients) {
       // console.log('true');
       message = message.replace("/msg " + receiver, "");
       //sends the message
+      linkPreview.messageToLink(message, io).catch(console.error);
       io.to(clients[id].getId()).emit("chatMessage", {
         message: message,
         username: clients[fromId].getUsername(),
