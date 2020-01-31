@@ -1,13 +1,14 @@
 const linkPreviewGenerator = require("link-preview-generator");
 const urlExists = require("url-exists");
 
-async function linkPreview(link, io) {
+async function linkPreview(link, message, io) {
   urlExists(link, async function(err, exists) {
     if (exists) {
       const preview = await linkPreviewGenerator(link).catch(console.error);
       if (preview) {
         io.emit("linkPreview", {
           link: link,
+          message: message,
           title: preview.title,
           description: preview.description,
           domain: preview.domain,
@@ -19,13 +20,14 @@ async function linkPreview(link, io) {
 }
 
 async function messageToLink(link, io) {
+  let message = link;
   if (link.includes("</a>")) {
     let links = link.split('"');
     links = links.filter(
       link =>
         link.includes("http") && !link.includes("</a>") && !link.includes("<a")
     );
-    linkPreview(links[0], io);
+    linkPreview(links[0], message, io);
   }
 }
 // linkPreview(

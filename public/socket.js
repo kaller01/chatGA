@@ -68,6 +68,9 @@ socket.on("chatMessage", function(data) {
         )
     );
   }
+  setTimeout(() => {
+    $("a").attr("target", "_blank");
+  }, 50);
   document.getElementsByClassName("tab-pane")[0].scrollBy({
     top: 1000
   });
@@ -78,7 +81,9 @@ socket.on("linkPreview", function(data) {
   for (let index = 0; index < clientMessage.length; index++) {
     message = clientMessage[index].innerHTML;
     if (
-      message.includes(data.link) &&
+      message
+        .replace(/ |target="_blank"/g, "")
+        .includes(data.message.replace(/ /g, "")) &&
       !message.includes(
         `<img class="card-img-right flex-auto d-none d-md-block previewImg" src="${data.img}">`
       )
@@ -87,11 +92,15 @@ socket.on("linkPreview", function(data) {
       ${message}
       <div class="card previewDiv flex-md-row mb-4 box-shadow h-md-250">
       <div class="card-body d-flex flex-column align-items-start">
-        <strong class="d-inline-block mb-2 text-primary">${data.title}</strong>
-        <p class="card-text mb-auto">${data.description}</p>
+        <strong class="d-inline-block mb-2 text-primary"><a href="${
+          data.link
+        }" target="_blank">${data.title}</a></strong>
+        <p class="card-text mb-auto">${data.description || data.title}</p>
         <a href="${data.link}" target="_blank">${data.domain}</a>
       </div>
-      <img class="card-img-right flex-auto d-none d-md-block previewImg" src="${data.img}">
+      <img class="card-img-right flex-auto d-none d-md-block previewImg" src="${
+        data.img
+      }">
     </div>`;
       setTimeout(() => {
         document.getElementsByClassName("tab-pane")[0].scrollBy({
