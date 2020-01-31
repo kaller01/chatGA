@@ -1,5 +1,6 @@
 const linkPreviewGenerator = require("link-preview-generator");
 const urlExists = require("url-exists");
+const stripHtml = require("string-strip-html");
 
 async function linkPreview(link, message, io) {
   urlExists(link, async function(err, exists) {
@@ -9,10 +10,10 @@ async function linkPreview(link, message, io) {
         io.emit("linkPreview", {
           link: link,
           message: message,
-          title: preview.title,
-          description: preview.description,
-          domain: preview.domain,
-          img: preview.img
+          title: stripHtml(preview.title || ""),
+          description: stripHtml(preview.description || ""),
+          domain: stripHtml(preview.domain || ""),
+          img: stripHtml(preview.img || "")
         });
       }
     }
