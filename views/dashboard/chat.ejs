@@ -30,23 +30,23 @@
         >
           <div id="output"></div>
         </div>
-        <div
-          class="tab-pane fade chat"
-          id="profile"
-          role="tabpanel"
-          aria-labelledby="profile-tab"
-        >
-          <div id="output1"></div>
-        </div>
-        <div
-          class="tab-pane fade chat"
-          id="contact"
-          role="tabpanel"
-          aria-labelledby="contact-tab"
-        >
-          <div id="output2"></div>
-        </div>
-      </div>
+        <form class="input-group" id="chatForm">
+            <input
+                    class="col-10"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="message"
+                    required
+                    id="chatInput"
+                    maxlength="200"
+            />
+            <input
+                    class="btn-primary col-2"
+                    type="submit"
+                    id="chatSubmit"
+                    value="Send"
+            />
+        </form>
     </div>
     <form class="input-group" id="chatForm">
       <input
@@ -99,6 +99,16 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+    </div>
+    <div class="right-panel d-flex col-6">
+        <div class="player">
+        <div id="playertitle">Plyr video player</div>
+        <div id="player" data-plyr-provider="vimeo" data-plyr-embed-id="148751763"></div>
+        </div>
+        <div class="clientlist">
+            <h3>Users connected:</h3>
+            <div id="clients">
+            </div>
         <div class="modal-body" id="modal-body">
           <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
         </div>

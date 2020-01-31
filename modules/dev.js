@@ -5,7 +5,7 @@ const Martin = "192.168.2.199";
 const local = "localhost";
 
 module.exports = {
-  host: AlbinRemote,
+  host: MartinRemote,
   port,
   logMessages: true
 };

@@ -1,6 +1,9 @@
 .wrapper {
+  padding-top: 20px;
   display: flex;
   justify-content: flex-start;
+  background-color: aliceblue;
+  min-height: 93vh;
 }
 
 #chatBoxDiv {
@@ -15,12 +18,16 @@
   border: 1px solid black;
 }
 
-.chat {
-  height: 80vh;
+.chat{
+  height: 75.5vh;
   overflow: auto;
   white-space: pre-line;
   width: 100%;
-  border: 1px solid black;
+  /*border: 1px solid black;*/
+  border-bottom: 1px solid rgb(222, 226, 230);
+  border-left: 1px solid rgb(222, 226, 230);
+  border-right: 1px solid rgb(222, 226, 230);
+  background-color: white;
 }
 
 .chat p:nth-child(even) {
@@ -46,9 +53,15 @@ p {
 
 .clientlist {
   overflow: auto;
+  background-color: white;
   padding: 5px;
-  border: 1px solid black;
+  border: 1px solid rgb(222, 226, 230);
   height: 20vh;
+}
+
+.player{
+  border: 1px solid rgb(222, 226, 230);
+  background-color: white;
 }
 
 .clientlist p:nth-child(even) {
