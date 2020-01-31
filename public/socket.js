@@ -89,7 +89,7 @@ const newConversation = username => {
     conversations.push(username);
     console.log(conversations);
     $("#tabs").append(
-      `<li class="nav-item" id="${username}-tab-li">
+      `<li class="nav-item tabchat"  id="${username}-tab-li">
                     <a class="nav-link" id="${username}-tab" data-toggle="tab" href="#${username}-chat" role="tab"
                        aria-controls="profile" aria-selected="false">
                         <div class="d-flex justify-content-between">

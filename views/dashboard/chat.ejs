@@ -18,22 +18,12 @@
         </div>
         <form class="input-group" id="chatForm">
             <input
-                    class="col-8"
+                    class="col-10"
                     type="text"
                     autocomplete="off"
                     placeholder="message"
                     required
                     id="chatInput"
-                    maxlength="200"
-            />
-            <input
-                    class="col-2"
-                    type="text"
-                    autocomplete="off"
-                    placeholder="to user..."
-                    required
-                    value="all"
-                    id="chatInput2"
                     maxlength="200"
             />
             <input
@@ -67,7 +57,10 @@
         </div>
     </div>
     <div class="right-panel d-flex col-6">
+        <div class="player">
+        <div id="playertitle">Plyr video player</div>
         <div id="player" data-plyr-provider="vimeo" data-plyr-embed-id="148751763"></div>
+        </div>
         <div class="clientlist">
             <h3>Users connected:</h3>
             <div id="clients">

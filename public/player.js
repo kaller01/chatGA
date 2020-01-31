@@ -156,6 +156,9 @@ function changeSource(source) {
 $(window).bind("load", function() {
   setTimeout(() => {
     socket.emit("getPlayerInfo");
+    console.log(player.source);
+    let atag = `<a href='${player.source}'>${player.source}</a>`;
+    $("#playertitle").html(atag);
   }, 1000);
 });
 socket.on("playerInfo", function(data) {
