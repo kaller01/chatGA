@@ -40,26 +40,38 @@ socket.on("chatMessage", function(data) {
       $("#" + data.username + "-output").append(
         $("<p>")
           .append($("<strong>").text(data.username + ": "))
-          .append($("<span>").html(data.message))
-          .addClass("messages")
+          .append(
+            $("<span>")
+              .html(data.message)
+              .addClass("messages")
+          )
       );
     } else if (data.private === "from") {
       $("#" + data.receiver + "-output").append(
         $("<p>")
           .append($("<strong>").text(data.username + ": "))
-          .append($("<span>").html(data.message))
-          .addClass("messages")
+          .append(
+            $("<span>")
+              .html(data.message)
+              .addClass("messages")
+          )
       );
     }
   } else {
     $("#output").append(
       $("<p>")
         .append($("<strong>").text(data.username + ": "))
-        .append($("<span>").html(data.message))
-        .addClass("messages")
+        .append(
+          $("<span>")
+            .html(data.message)
+            .addClass("messages")
+        )
     );
   }
-  output.scrollBy({
+  setTimeout(() => {
+    $("a").attr("target", "_blank");
+  }, 50);
+  document.getElementsByClassName("tab-pane")[0].scrollBy({
     top: 1000
   });
 });
@@ -67,21 +79,36 @@ socket.on("chatMessage", function(data) {
 socket.on("linkPreview", function(data) {
   const clientMessage = document.getElementsByClassName("messages");
   for (let index = 0; index < clientMessage.length; index++) {
-    console.log(clientMessage[index]);
+    message = clientMessage[index].innerHTML;
+    if (
+      message
+        .replace(/ |target="_blank"/g, "")
+        .includes(data.message.replace(/ /g, "")) &&
+      !message.includes(
+        `<img class="card-img-right flex-auto d-none d-md-block previewImg" src="${data.img}">`
+      )
+    ) {
+      clientMessage[index].innerHTML = `
+      ${message}
+      <div class="card previewDiv flex-md-row mb-4 box-shadow h-md-250">
+      <div class="card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 text-primary"><a href="${
+          data.link
+        }" target="_blank">${data.title}</a></strong>
+        <p class="card-text mb-auto">${data.description || data.title}</p>
+        <a href="${data.link}" target="_blank">${data.domain}</a>
+      </div>
+      <img class="card-img-right flex-auto d-none d-md-block previewImg" src="${
+        data.img
+      }">
+    </div>`;
+      setTimeout(() => {
+        document.getElementsByClassName("tab-pane")[0].scrollBy({
+          top: 4000
+        });
+      }, 50);
+    }
   }
-  //   console.log(clientMessage);
-  //   $(".messages")
-  //     .children()
-  //     .eq(1)
-  //     .html();
-  if (clientMessage.includes(data.link)) {
-    console.log("hej");
-    $(".messages")
-      .children()
-      .eq(1)
-      .html(`${clientMessage} hej`);
-  }
-  console.log(data);
 });
 
 const newConversation = username => {
