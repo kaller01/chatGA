@@ -135,3 +135,24 @@ p {
 .previewImg {
   max-height: 150px;
 }
+.previewImg:hover {
+  cursor: pointer;
+}
+
+.bigImg {
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+#bigImg {
+  max-width: 80%;
+  max-height: 100%;
+}
