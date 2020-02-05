@@ -5,6 +5,7 @@ window.addEventListener("DOMSubtreeModified", () => {
     let user = e.target.attributes.id.value.replace("-tab", "");
     if (sendTo !== user) {
       console.log("Changeconvo", user);
+      clearNotifications(user);
       sendTo = user;
     }
   });
@@ -80,11 +81,13 @@ function setCaretPosition(ctrl, pos) {
 $(".bigImg").click(function(event) {
   $(".bigImg").hide();
 });
+
 $(document).keydown(e => {
   if (e.key === "Escape" && $(".bigImg").is(":visible")) {
     $(".bigImg").hide();
   }
 });
+
 
 $("#modalLogin").on("show.bs.modal", function(e) {
   setTimeout(() => {
@@ -103,3 +106,17 @@ $("#modalGuest").on("show.bs.modal", function(e) {
     document.getElementById("usernameGuest").focus();
   }, 50);
 });
+
+const clearNotifications = username =>{
+  $("#"+username+"-notification").hide();
+};
+
+const addNotifcations = username =>{
+    if(sendTo !== username){
+        let notification = $("#"+username+"-notification");
+        notification.show();
+        notification.text(parseInt(notification.text())+1);
+    }
+};
+
+clearNotifications("all");
