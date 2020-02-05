@@ -5,7 +5,7 @@ const stripHtml = require("string-strip-html");
 async function linkPreview(link, message, io) {
   urlExists(link, async function(err, exists) {
     if (exists) {
-      const preview = await linkPreviewGenerator(link).catch(console.error);
+      const preview = await linkPreviewGenerator(link).catch(e => {});
       if (preview) {
         io.emit("linkPreview", {
           link: link,
