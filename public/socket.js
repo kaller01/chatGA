@@ -12,7 +12,7 @@ socket.on("chatUpdate", function(data) {
   console.log(data.clients);
   data.clients.forEach(client => {
     $("#clients").append(
-      `<p class="d-flex justify-content-between">${client}<span class="btn btn-outline-primary btn-sm" id="${client}-action>" onclick="newConversation('${client}')">Chat</span></p>`
+      `<p class="d-flex justify-content-between">${client}<span class="btn btn-outline-primary btn-sm" id="${client}-action>" onclick="openNewConversation('${client}')">Chat</span></p>`
     );
   });
 });
@@ -37,6 +37,7 @@ socket.on("chatMessage", function(data) {
   if (data.private) {
     if (data.private === "to") {
       newConversation(data.username);
+      addNotifcations(data.username);
       $("#" + data.username + "-output").append(
         $("<p>")
           .append($("<strong>").text(data.username + ": "))
@@ -58,6 +59,7 @@ socket.on("chatMessage", function(data) {
       );
     }
   } else {
+    addNotifcations("all");
     $("#output").append(
       $("<p>")
         .append($("<strong>").text(data.username + ": "))
@@ -111,6 +113,12 @@ socket.on("linkPreview", function(data) {
   }
 });
 
+const openNewConversation = username =>{
+  newConversation(username);
+  $("#" + username + "-tab").tab("show");
+
+};
+
 const newConversation = username => {
   if (!conversations.includes(username)) {
     conversations.push(username);
@@ -120,7 +128,7 @@ const newConversation = username => {
                     <a class="nav-link" id="${username}-tab" data-toggle="tab" href="#${username}-chat" role="tab"
                        aria-controls="profile" aria-selected="false">
                         <div class="d-flex justify-content-between">
-                            <div><span class="badge badge-danger">7</span> ${username} </div>
+                            <div><span id="${username}-notification" class="badge badge-danger">0</span> ${username} </div>
                             <button type="button" class="close ml-3" aria-label="Close" onclick="removeConversation('${username}')">
                                 <span>&times;</span>
                             </button>
@@ -131,7 +139,6 @@ const newConversation = username => {
     $("#chats").append(
       `<div class="tab-pane fade chat" id="${username}-chat" role="tabpanel" aria-labelledby="${username}-tab"><div id="${username}-output"></div></div>`
     );
-    $("#" + username + "-tab").tab("show");
   }
 };
 
