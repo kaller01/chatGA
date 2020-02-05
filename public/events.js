@@ -88,6 +88,25 @@ $(document).keydown(e => {
   }
 });
 
+
+$("#modalLogin").on("show.bs.modal", function(e) {
+  setTimeout(() => {
+    document.getElementById("username").focus();
+  }, 50);
+});
+
+$("#modalCreate").on("show.bs.modal", function(e) {
+  setTimeout(() => {
+    document.getElementById("usernameCreate").focus();
+  }, 50);
+});
+
+$("#modalGuest").on("show.bs.modal", function(e) {
+  setTimeout(() => {
+    document.getElementById("usernameGuest").focus();
+  }, 50);
+});
+
 const clearNotifications = username =>{
   $("#"+username+"-notification").hide();
 };

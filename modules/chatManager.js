@@ -77,7 +77,7 @@ let msg = function(fromId, rawMessage, io) {
         }
       } else {
         const message = anchorme(stripHtml(rawMessage));
-        linkPreview.messageToLink(message, io).catch(console.error);
+        linkPreview.messageToLink(message, io).catch(e => {});
         io.emit("chatMessage", {
           message: message,
           username: clients[fromId].getUsername()

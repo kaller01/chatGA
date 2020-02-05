@@ -1,104 +1,108 @@
 <div class="wrapper">
-    <div class="bigImg">
-        <img id="bigImg" src="" alt=""/>
-    </div>
-    <div id="chatBoxDiv" class="col-6">
-        <div>
-            <ul class="nav nav-tabs" id="tabs" role="tablist">
-                <li class="nav-item">
-                    <a
-                            class="nav-link active"
-                            id="all-tab"
-                            data-toggle="tab"
-                            href="#all"
-                            role="tab"
-                            aria-controls="home"
-                            aria-selected="true"
-                    >
-                        <div class="d-flex justify-content-between">
-                            <div><span id="all-notification" class="badge badge-danger">10</span> Mainchat</div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-            <div class="tab-content" id="chats">
-                <div
-                        class="tab-pane fade show active chat"
-                        id="all"
-                        role="tabpanel"
-                        aria-labelledby="all-tab"
-                >
-                    <div id="output"></div>
-                </div>
+  <div class="bigImg">
+    <img id="bigImg" src="" alt="" />
+  </div>
+  <div id="chatBoxDiv" class="col-6">
+    <div>
+      <ul class="nav nav-tabs" id="tabs" role="tablist">
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            id="all-tab"
+            data-toggle="tab"
+            href="#all"
+            role="tab"
+            aria-controls="home"
+            aria-selected="true"
+          >
+            <div class="d-flex justify-content-between">
+              <div><span class="badge badge-danger">10</span> Mainchat</div>
             </div>
-            <form class="input-group" id="chatForm">
-                <input
-                        class="col-10"
-                        type="text"
-                        autocomplete="off"
-                        placeholder="message"
-                        required
-                        id="chatInput"
-                        maxlength="200"
-                />
-                <input
-                        class="btn-primary col-2"
-                        type="submit"
-                        id="chatSubmit"
-                        value="Send"
-                />
-            </form>
-        </div>
-
-        <!-- Modal -->
+          </a>
+        </li>
+      </ul>
+      <div class="tab-content" id="chats">
         <div
-                class="modal fade"
-                id="exampleModal"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
+          class="tab-pane fade show active chat"
+          id="all"
+          role="tabpanel"
+          aria-labelledby="all-tab"
         >
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button
-                                type="button"
-                                class="close"
-                                data-dismiss="modal"
-                                aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
+          <div id="output"></div>
+        </div>
+      </div>
+      <form class="input-group" id="chatForm">
+        <input
+          class="col-10"
+          type="text"
+          autocomplete="off"
+          placeholder="message"
+          required
+          id="chatInput"
+          maxlength="200"
+          autofocus
+        />
+        <input
+          class="btn-primary col-2"
+          type="submit"
+          id="chatSubmit"
+          value="Send"
+        />
+      </form>
+    </div>
 
-                <div class="modal-body" id="modal-body">
-                    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                        Close
-                    </button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         </div>
+
+        <div class="modal-body" id="modal-body">
+          <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
     </div>
-    <div class="right-panel d-flex col-6">
-        <div class="player">
-            <div id="playertitle">Plyr video player</div>
-            <div id="player" data-plyr-provider="vimeo" data-plyr-embed-id="148751763"></div>
-        </div>
-        <div class="clientlist">
-            <h3>Users connected:</h3>
-            <div id="clients">
-            </div>
-        </div>
+  </div>
+  <div class="right-panel d-flex col-6">
+    <div class="player">
+      <div id="playertitle">Plyr video player</div>
+      <div
+        id="player"
+        data-plyr-provider="vimeo"
+        data-plyr-embed-id="148751763"
+      ></div>
     </div>
+    <div class="clientlist">
+      <h3>Users connected:</h3>
+      <div id="clients"></div>
+    </div>
+  </div>
 </div>
 
 <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
-<link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css"/>
+<link rel="stylesheet" href="https://cdn.plyr.io/3.5.6/plyr.css" />
 <!-- <div id="player" data-plyr-provider="youtube" data-plyr-embed-id="dQw4w9WgXcQ"></div> -->

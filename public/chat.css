@@ -18,7 +18,7 @@
   border: 1px solid black;
 }
 
-.chat{
+.chat {
   height: 75.5vh;
   overflow: auto;
   white-space: pre-line;
@@ -59,7 +59,7 @@ p {
   height: 20vh;
 }
 
-.player{
+.player {
   border: 1px solid rgb(222, 226, 230);
   background-color: white;
 }
@@ -147,9 +147,14 @@ p {
 }
 .previewImg {
   max-height: 150px;
+  max-width: 40%;
 }
 .previewImg:hover {
   cursor: pointer;
+}
+.card-text {
+  max-height: 100%;
+  overflow: hidden;
 }
 
 .bigImg {
