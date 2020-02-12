@@ -41,14 +41,14 @@ socket.on("chatMessage", function (data) {
         showMessage(data, $("#output"));
       console.log("mode 1");
     } else {
-        if (data.receiver.username === clientUsername) {
+        if (data.receiver.username[0] === clientUsername) {
             newConversation(data.username);
             addNotifcations(data.username);
           console.log("mode 2");
             showMessage(data, $("#" + data.username + "-output"));
         } else {
           console.log("mode 3");
-            showMessage(data, $("#" + data.receiver.username + "-output"));
+            showMessage(data, $("#" + data.receiver.username[0]  + "-output"));
         }
     }
     setTimeout(() => {

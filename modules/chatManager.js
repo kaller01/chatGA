@@ -53,21 +53,28 @@ let msg = function (fromId, data, io) {
             }
         } else {
             const message = anchorme(stripHtml(rawMessage));
+            const channel = "chatMessage";
             const messagedata = {
                 message,
-                receiver: data.receiver,
-                sender: clients[fromId].getUsername(),
+                username: clients[fromId].getUsername(),
+                receiver: {
+                    username: data.receiver
+                },
             };
             if (data.receiver !== "all") {
                 //lops through each client and checks username
-                emitMessage(messagedata, io, fromId);
-                Object.keys(clients).forEach(function (id) {
-                    // console.log(clients[id].getUsername());
-                    if (clients[id].getUsername() === data.receiver) {
-                        emitMessage(messagedata, io, id);
+                io.to(fromId).emit(channel, messagedata);
+                data.receiver.forEach(receiver=>{
+                  Object.keys(clients).forEach(function (id) {
+                    if (clients[id].getUsername() === receiver) {
+                      io.to(id).emit(channel, messagedata);
                     }
+                  });
                 });
-            } else emitMessage(messagedata, io);
+            } else {
+                io.emit(channel, messagedata);
+                console.log(3);
+            }
 
             if (dev.logMessages) {
                 let fromUser = clients[fromId].getUsername();
