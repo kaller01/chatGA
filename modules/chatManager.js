@@ -28,7 +28,12 @@ let msg = function (fromId, data, io) {
     if (typeof clients[fromId] == "undefined") {
         io.to(fromId).emit("chatMessage", {
             message: "authorization needed",
-            username: "system"
+            sender:{
+              username: "system"
+            },
+            receiver: {
+              username: "all"
+            }
         });
     } else {
         //checks for /msg
@@ -56,24 +61,29 @@ let msg = function (fromId, data, io) {
             const channel = "chatMessage";
             const messagedata = {
                 message,
-                username: clients[fromId].getUsername(),
+                sender: {
+                    username: clients[fromId].getUsername(),
+                },
                 receiver: {
-                    username: data.receiver
+                    username: data.receiver,
                 },
             };
+            console.log(data.receiver);
             if (data.receiver !== "all") {
                 //lops through each client and checks username
-                io.to(fromId).emit(channel, messagedata);
-                data.receiver.forEach(receiver=>{
-                  Object.keys(clients).forEach(function (id) {
+                const receiver = data.receiver;
+                Object.keys(clients).forEach(function (id) {
                     if (clients[id].getUsername() === receiver) {
-                      io.to(id).emit(channel, messagedata);
+                        const sockets = io.to(id).to(fromId);
+                        sockets.emit(channel, messagedata);
+                        linkPreview.messageToLink(message, sockets).catch(e => {
+                        });
                     }
-                  });
                 });
             } else {
                 io.emit(channel, messagedata);
-                console.log(3);
+                linkPreview.messageToLink(message, io).catch(e => {
+                });
             }
 
             if (dev.logMessages) {

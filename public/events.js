@@ -28,7 +28,7 @@ chatForm.addEventListener("submit", function (event) {
     }
     socket.emit("chatMessage", {
         message,
-        receiver: [user]
+        receiver: user
     });
 
     if (messageHistory[messageHistory.length - 1] !== chatInput.value) {

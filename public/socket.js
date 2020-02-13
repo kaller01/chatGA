@@ -41,14 +41,14 @@ socket.on("chatMessage", function (data) {
         showMessage(data, $("#output"));
       console.log("mode 1");
     } else {
-        if (data.receiver.username[0] === clientUsername) {
-            newConversation(data.username);
-            addNotifcations(data.username);
+        if (data.receiver.username === clientUsername) {
+            newConversation(data.sender.username);
+            addNotifcations(data.sender.username);
           console.log("mode 2");
-            showMessage(data, $("#" + data.username + "-output"));
+            showMessage(data, $("#" + data.sender.username + "-output"));
         } else {
           console.log("mode 3");
-            showMessage(data, $("#" + data.receiver.username[0]  + "-output"));
+            showMessage(data, $("#" + data.receiver.username  + "-output"));
         }
     }
     setTimeout(() => {
@@ -60,6 +60,7 @@ socket.on("chatMessage", function (data) {
 });
 
 socket.on("linkPreview", function (data) {
+    console.log(data);
     const clientMessage = document.getElementsByClassName("messages");
     for (let index = 0; index < clientMessage.length; index++) {
         message = clientMessage[index].innerHTML;
@@ -138,7 +139,7 @@ const removeConversation = username => {
 const showMessage = (data, output) => {
     output.append(
         $("<p>")
-            .append($("<strong>").text(data.username + ": "))
+            .append($("<strong>").text(data.sender.username + ": "))
             .append(
                 $("<span>")
                     .html(data.message)
