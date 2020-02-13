@@ -1,7 +1,13 @@
 const linkPreviewGenerator = require("link-preview-generator");
 const urlExists = require("url-exists");
 const stripHtml = require("string-strip-html");
-
+/**
+ * Takes link and sends preview to frontend
+ *
+ * @param   {String}  link     hyperlink as String
+ * @param   {String}  message  message as String
+ * @param   {socketIO}  io       socketIO
+ */
 async function linkPreview(link, message, io) {
   urlExists(link, async function(err, exists) {
     if (exists) {
@@ -19,7 +25,12 @@ async function linkPreview(link, message, io) {
     }
   });
 }
-
+/**
+ * Picks out link from chat messages and sends it to linkPreview
+ *
+ * @param   {String}  link  chat message as String
+ * @param   {socketIO}  io    socketIO
+ */
 async function messageToLink(link, io) {
   let message = link;
   if (link.includes("</a>")) {

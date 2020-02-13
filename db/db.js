@@ -3,7 +3,13 @@ const appRoot = require("app-root-path");
 const db = new sqlite3.Database(appRoot + "/db/db.sqlite");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-
+/**
+ * Turns string into encrypted hash
+ *
+ * @param   {String}  password  String to encrypt (usually password)
+ *
+ * @return  {String}            Encrypted hash of indata
+ */
 function encrypt(password) {
   return new Promise((resolve, reject) => {
     bcrypt.genSalt(saltRounds, function(err, salt) {
@@ -17,7 +23,13 @@ function encrypt(password) {
     });
   });
 }
-
+/**
+ * Gets the hashed password of the account with the username
+ *
+ * @param   {String}  username  username of the user who's password you want
+ *
+ * @return  {String}            hashed password of the user
+ */
 function getHashByUsername(username) {
   return new Promise(resolve => {
     db.all("SELECT password from users where username=?", username, function(
@@ -33,7 +45,13 @@ function getHashByUsername(username) {
     });
   });
 }
-
+/**
+ * Gets all info from a user by its username
+ *
+ * @param {String} username
+ *
+ * @return {Array}
+ */
 const getAllByUsername = username => {
   return new Promise(resolve => {
     db.all("SELECT * from users where username=?", username, function(
@@ -49,7 +67,13 @@ const getAllByUsername = username => {
     });
   });
 };
-
+/**
+ * Gets all users that has a username like username
+ *
+ * @param {String} username
+ *
+ * @return {Array} all users with matching username and all their info
+ */
 const searchByUsername = username => {
   return new Promise(resolve => {
     db.all("SELECT * from users where username like %?%", username, function(
@@ -65,7 +89,11 @@ const searchByUsername = username => {
     });
   });
 };
-
+/**
+ * Get info about all the users
+ *
+ * @return {Array} all users in an array
+ */
 const getAll = () => {
   return new Promise((resolve, reject) => {
     let sql = "SELECT * from users";
@@ -79,7 +107,14 @@ const getAll = () => {
     });
   });
 };
-
+/**
+ * Verifies password
+ *
+ * @param   {String}  password  Password in text
+ * @param   {String}  hash      Hashed password
+ *
+ * @return  {boolean}
+ */
 function compareHash(password, hash) {
   return new Promise((resolve, reject) => {
     bcrypt.compare(password, hash, function(err, res) {
@@ -91,7 +126,14 @@ function compareHash(password, hash) {
     });
   });
 }
-
+/**
+ * Adds a user
+ *
+ * @param {String} username
+ * @param {String} password
+ *
+ * @return {boolean} if it succeeded
+ */
 const addUser = (username, password) => {
   return new Promise(async resolve => {
     const hash = await encrypt(password);
@@ -111,7 +153,14 @@ const addUser = (username, password) => {
     );
   });
 };
-
+/**
+ * Tries to log the user in
+ *
+ * @param {String} username
+ * @param {String} password
+ *
+ * @return {boolean} if it succeeds
+ */
 const login = function(username, password) {
   return new Promise(async (resolve, reject) => {
     if (username && password) {
@@ -129,7 +178,13 @@ const login = function(username, password) {
     }
   });
 };
-
+/**
+ *
+ * @param {String} fromUser username of sender
+ * @param {String} to username of receiver
+ * @param {String} message
+ * @param {int} date
+ */
 const addMessage = function(fromUser, to, message, date) {
   db.run(
     "INSERT INTO messages VALUES (null,?,?,?,?)",
@@ -139,7 +194,13 @@ const addMessage = function(fromUser, to, message, date) {
     date
   );
 };
-
+/**
+ * gets the 15 last messaged sent to receiver
+ *
+ * @param {String} receiver username of receiver
+ *
+ * @return {boolean} if it succeeded
+ */
 const getLastMessages = async receiver => {
   return new Promise(resolve => {
     db.all(
