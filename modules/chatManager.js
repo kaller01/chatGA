@@ -37,10 +37,9 @@ let msg = function (fromId, data, io) {
         });
     } else {
         //checks for /msg
-        if (rawMessage.startsWith("a  /")) {
+        if (rawMessage.startsWith("/")) {
             switch (rawMessage.split(" ")[0]) {
                 case "/msg":
-                    console.log("called");
                     command.private(fromId, message, io, clients);
                     break;
                 case "/rickroll":
