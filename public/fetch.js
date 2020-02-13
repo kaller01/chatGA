@@ -13,6 +13,7 @@ async function login(url, username, password, id, error) {
   if (json.username) {
     $("#modal" + id).modal("hide");
     $("#displayName").html(json.username);
+    clientUsername = json.username;
     $("#chatForm").show();
     $("#error" + id).hide();
   } else if (json.error) {
