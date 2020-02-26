@@ -16,7 +16,6 @@
             justify-content: space-around;
         }
     </style>
-    <%- include('test')%>
     <link rel="stylesheet" href="/chat.css"/>
 
 </head>
@@ -27,6 +26,7 @@
 <%- helpers.createModal('Login','Login to DB',include('dashboard/modalbody/login.ejs'),'Login') %>
 <%- helpers.createModal('Guest','Login as guest',include('dashboard/modalbody/guest.ejs'),'Create') %>
 <%- helpers.createModal('Create','Create Account',include('dashboard/modalbody/create.ejs'),'Login') %>
+<%- helpers.createModal('Game','Some game',include('dashboard/modalbody/game.ejs')) %>
 
 <script>
     <%- include('dashboard/main.js') %>
