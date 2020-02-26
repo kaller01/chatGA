@@ -6,10 +6,7 @@ const manager = function(socket, io) {
     chat.disconnect(socket.id, io);
   });
   socket.on("chatMessage", function(data) {
-    chat.msg(socket.id, data, io);
-  });
-  socket.on("message", function(data) {
-    //from socketid, channel, message
+    chat.msg(socket.id, data, io,socket);
   });
   socket.on("login", function(username) {
     chat.addClient(socket.id, username + "_guest");

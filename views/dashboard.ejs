@@ -20,50 +20,59 @@
 
 </head>
 <body>
-<%- include('dashboard/navbar')%>
-<%- include('dashboard/chat')%>
+<div id="app">
+    <%- include('dashboard/navbar') %>
+    <%- include('dashboard/chat') %>
 
-<%- helpers.createModal('Login','Login to DB',include('dashboard/modalbody/login.ejs'),'Login') %>
-<%- helpers.createModal('Guest','Login as guest',include('dashboard/modalbody/guest.ejs'),'Create') %>
-<%- helpers.createModal('Create','Create Account',include('dashboard/modalbody/create.ejs'),'Login') %>
-<%- helpers.createModal('Game','Some game',include('dashboard/modalbody/game.ejs')) %>
+    <%- helpers.createModal('Login', 'Login to DB', include('dashboard/modalbody/login.ejs'), 'Login') %>
+    <%- helpers.createModal('Guest', 'Login as guest', include('dashboard/modalbody/guest.ejs'), 'Create') %>
+    <%- helpers.createModal('Create', 'Create Account', include('dashboard/modalbody/create.ejs'), 'Login') %>
+    <%- helpers.createModal('Game', 'Ping Pong', include('dashboard/modalbody/game.ejs')) %>
+</div>
+
 
 <script>
     <%- include('dashboard/main.js') %>
-    $('#modalButtonLogin').click(()=>{
-        login('/api/login',$('#username').val(),$('#password').val(),'Login', 'Password or username wrong');
+    $('#modalButtonLogin').click(() => {
+        login('/api/login', $('#username').val(), $('#password').val(), 'Login', 'Password or username wrong');
     });
-    $('#modalLogin').keydown((e)=>{
-        if(e.key === 'Enter'){
-            login('/api/login',$('#username').val(),$('#password').val(),'Login','Password or username wrong');
-        }else{
+    $('#modalLogin').keydown((e) => {
+        if (e.key === 'Enter') {
+            login('/api/login', $('#username').val(), $('#password').val(), 'Login', 'Password or username wrong');
+        } else {
             $('#errorLogin').hide();
         }
     });
-    $('#modalButtonGuest').click(()=>{
-        login('/api/login',$('#usernameGuest').val(),null,'Guest','Username does not meet standards');
+    $('#modalButtonGuest').click(() => {
+        login('/api/login', $('#usernameGuest').val(), null, 'Guest', 'Username does not meet standards');
     });
-    $('#modalGuest').keydown((e)=>{
-        if(e.key === 'Enter'){
-            login('/api/login',$('#usernameGuest').val(),null,'Guest', 'Username does not meet standards');
-        }else{
+    $('#modalGuest').keydown((e) => {
+        if (e.key === 'Enter') {
+            login('/api/login', $('#usernameGuest').val(), null, 'Guest', 'Username does not meet standards');
+        } else {
             $('#errorGuest').hide();
         }
     });
-    $('#modalButtonCreate').click(()=>{
-        login('/api/create',$('#usernameCreate').val(),$('#passwordCreate').val(),'Create', 'Username taken or does not meet standards');
+    $('#modalButtonCreate').click(() => {
+        login('/api/create', $('#usernameCreate').val(), $('#passwordCreate').val(), 'Create', 'Username taken or does not meet standards');
     });
-    $('#modalCreate').keydown((e)=>{
-        if(e.key === 'Enter'){
-            login('/api/create',$('#usernameCreate').val(),$('#passwordCreate').val(),'Create', 'Username taken or does not meet standards');
-        }else{
+    $('#modalCreate').keydown((e) => {
+        if (e.key === 'Enter') {
+            login('/api/create', $('#usernameCreate').val(), $('#passwordCreate').val(), 'Create', 'Username taken or does not meet standards');
+        } else {
             $('#errorCreate').hide();
         }
     });
 </script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 <script src="/player.js"></script>
 <script src="/socket.js"></script>
 <script src="/fetch.js"></script>
