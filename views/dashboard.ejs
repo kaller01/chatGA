@@ -9,6 +9,8 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <style>
         #loginModal {
             display: flex;
@@ -20,14 +22,121 @@
 
 </head>
 <body>
-<div id="app">
+<div>
     <%- include('dashboard/navbar') %>
-    <%- include('dashboard/chat') %>
 
-    <%- helpers.createModal('Login', 'Login to DB', include('dashboard/modalbody/login.ejs'), 'Login') %>
-    <%- helpers.createModal('Guest', 'Login as guest', include('dashboard/modalbody/guest.ejs'), 'Create') %>
-    <%- helpers.createModal('Create', 'Create Account', include('dashboard/modalbody/create.ejs'), 'Login') %>
-    <%- helpers.createModal('Game', 'Ping Pong', include('dashboard/modalbody/game.ejs')) %>
+
+    <div id="app">
+        <div id="chatBoxDiv" class="col-6">
+            <div>
+                <ul class="nav nav-tabs" id="tabs" role="tablist">
+                    <li class="nav-item">
+                        <a
+                                class="nav-link active"
+                                id="all-tab"
+                                data-toggle="tab"
+                                href="#all"
+                                role="tab"
+                                aria-controls="home"
+                                aria-selected="true"
+                        >
+                            <div class="d-flex justify-content-between">
+                                <div><span class="badge badge-danger">10</span> Mainchat</div>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="nav-item tabchat" v-for="chat in chatsOpen" :id="chat+'-tab-li'">
+                        <a class="nav-link" :id="chat+'-tab'" data-toggle="tab" :href="'#'+chat+'-chat'" role="tab"
+                           aria-controls="profile" aria-selected="false">
+                            <div class="d-flex justify-content-between">
+                                <div><span :id="chat+'-notification'" class="badge badge-danger">0</span> {{chat}}
+                                </div>
+                                <button type="button" class="close ml-3" aria-label="Close" @click="closeChat(chat)">
+                                    <span>&times;</span>
+                                </button>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="chats">
+                    <div
+                            class="tab-pane fade show active chat"
+                            id="all"
+                            role="tabpanel"
+                            aria-labelledby="all-tab"
+                    >
+                        <div id="output1">
+                            <p v-for="message in messages">
+                                <strong>{{message.sender.username}}:</strong>
+                                <span v-html="message.message" class="messages">
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input
+                            v-model="message"
+                            class="col-10"
+                            type="text"
+                            autocomplete="off"
+                            placeholder="message"
+                            required
+                            id="chatInput"
+                            maxlength="200"
+                            autofocus
+                    />
+                    <button class="btn btn-primary col-2" @click="sendMessage()">
+                        Send
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div
+                class="modal fade"
+                id="exampleModal"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+        >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                        >
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="modal-body" id="modal-body">
+                    <!-- <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0?autoplay=1" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Close
+                    </button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<%- include('dashboard/chat') %>-->
+
+<%- helpers.createModal('Login', 'Login to DB', include('dashboard/modalbody/login.ejs'), 'Login') %>
+<%- helpers.createModal('Guest', 'Login as guest', include('dashboard/modalbody/guest.ejs'), 'Create') %>
+<%- helpers.createModal('Create', 'Create Account', include('dashboard/modalbody/create.ejs'), 'Login') %>
+<%- helpers.createModal('Game', 'Ping Pong', include('dashboard/modalbody/game.ejs')) %>
 </div>
 
 
@@ -73,6 +182,65 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script>
+
+    const app = new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            messages: [],
+            chatsOpen: ['test'],
+            messageNumber: 0,
+            notifications: [],
+        },
+        methods: {
+            sendMessage() {
+                socket.emit("chatMessage", {
+                    message: this.message,
+                    receiver: sendTo,
+                });
+
+                if (messageHistory[messageHistory.length - 1] !== this.message) {
+                    messageHistory.push(this.message);
+                }
+                this.message = '';
+                this.messageNumber++;
+                console.log(messageHistory);
+            },
+            closeChat(chat){
+                this.chatsOpen.splice(this.chatsOpen.indexOf(chat),1);
+            }
+        },
+        created() {
+            socket.on('chatMessage', (data) => {
+                this.messages.push(data);
+            });
+
+            window.addEventListener("keydown", e => {
+                switch (e.key) {
+                    case "Enter":
+                        this.sendMessage();
+                        break;
+                    case "ArrowUp":
+                        if (this.messageNumber > 0) this.messageNumber--;
+                        e.preventDefault();
+                        this.message = messageHistory[this.messageNumber];
+                        setCaretPosition(this.message, this.message.length);
+                        break;
+                    case "ArrowDown":
+                        if (this.messageNumber < messageHistory.length - 1 && this.messageNumber >= 0) {
+                            this.messageNumber++;
+                            this.message = messageHistory[this.messageNumber];
+                        } else if (this.messageNumber === messageHistory.length - 1) {
+                            this.messageNumber++;
+                            this.message = "";
+                        }
+                        break;
+                }
+            });
+        },
+    });
+</script>
 <script src="/player.js"></script>
 <script src="/socket.js"></script>
 <script src="/fetch.js"></script>

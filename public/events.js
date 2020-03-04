@@ -17,41 +17,20 @@ window.addEventListener("DOMSubtreeModified", () => {
     });
 });
 
-chatForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-    // const user = $("#chatInput2").val();
-    const user = sendTo;
-    let message = chatInput.value;
-    console.log(message);
-    if (user !== "all") {
-        newConversation(user);
-    }
-    socket.emit("chatMessage", {
-        message,
-        receiver: user
-    });
-
-    if (messageHistory[messageHistory.length - 1] !== chatInput.value) {
-        messageHistory.push(chatInput.value);
-    }
-    messageNumber = messageHistory.length;
-    chatInput.value = "";
-});
-
 $("#chatForm").keydown(e => {
     if (e.key === "ArrowUp") {
-        if (messageNumber > 0) messageNumber--;
-        e.preventDefault();
-        chatInput.value = messageHistory[messageNumber];
-        setCaretPosition(chatInput, chatInput.value.length);
-    } else if (e.key === "ArrowDown") {
-        if (messageNumber < messageHistory.length - 1 && messageNumber >= 0) {
-            messageNumber++;
+            if (messageNumber > 0) messageNumber--;
+            e.preventDefault();
             chatInput.value = messageHistory[messageNumber];
-        } else if (messageNumber === messageHistory.length - 1) {
-            messageNumber++;
-            chatInput.value = "";
-        }
+            setCaretPosition(chatInput, chatInput.value.length);
+        } else if (e.key === "ArrowDown") {
+            if (messageNumber < messageHistory.length - 1 && messageNumber >= 0) {
+                messageNumber++;
+                chatInput.value = messageHistory[messageNumber];
+            } else if (messageNumber === messageHistory.length - 1) {
+                messageNumber++;
+                chatInput.value = "";
+            }
     }
 });
 
