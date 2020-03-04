@@ -153,9 +153,12 @@ socket.on("pingpong", (data) => {
     data.p2 ? p2.y = data.p2.y : false;
 });
 
+let pongRoom;
+
 socket.on("ponginvite", data => {
  socket.emit("pongaccept", data);
- console.log("pong accepted");
+ console.log("pong accepted", pongRoom);
+ pongRoom = data.room;
 });
 
 
@@ -192,7 +195,8 @@ function draw() {
     const gameData = {
         up: p1.keys.up,
         down: p1.keys.down,
-    }
+        room: pongRoom
+    };
 
     socket.emit("pingpong", gameData);
 }
@@ -223,3 +227,4 @@ $("#modalGame").keyup(e => {
 });
 
 setInterval(draw, 1000 / fps);
+

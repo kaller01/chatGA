@@ -84,7 +84,12 @@ const pong = (data)=>{
   const invitedId = data.id;
   const clients = data.clients;
   const room = socket.id+"pong";
+  // const room = 'pongroom';
+  console.log(room);
   socket.join(room);
+  socket.emit("ponginvite",{
+    room
+  });
   io.to(invitedId).emit("ponginvite",{
     room
   })
