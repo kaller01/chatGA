@@ -9,12 +9,19 @@ const linkPreview = require("./link");
 let Client = function (socketid, name) {
     let id = socketid;
     let username = name;
+    let room;
     this.getId = function () {
         return id;
     };
     this.getUsername = function () {
         return username;
     };
+    this.getRoom = ()=>{
+        return room;
+    };
+    this.setRoom = (input)=>{
+      room = input;
+    }
 };
 
 //Array with clients
@@ -56,12 +63,15 @@ let msg = function (fromId, data, io, socket) {
                     command.watch(fromId, rawMessage, io, clients);
                     break;
                 case "/pong":
-                    command.pong({
-                        socket,
-                        id: getIdFromUsername(wordsInMessage[1]),
-                        io,
-                        clients
-                    });
+                        getIdFromUsername(wordsInMessage[1]).then(id=>{
+                            command.pong({
+                                socket,
+                                id,
+                                io,
+                                clients
+                            });
+                        });
+                    break;
             }
         } else {
             const message = anchorme(stripHtml(rawMessage));
@@ -164,10 +174,15 @@ async function createUserDB(socketid, io, username, password) {
 }
 
 const getIdFromUsername = (username) => {
-    Object.keys(clients).forEach(function (id) {
-        if (clients[id].getUsername() === username) {
-            return id;
-        }
+    return new Promise(resolve=>{
+        console.log(clients);
+        Object.keys(clients).forEach(function (id) {
+            console.log(clients[id].getUsername(), username);
+            if (clients[id].getUsername() === username) {
+                console.log('INVITED ID 1',id);
+                resolve(id);
+            }
+        });
     });
 };
 

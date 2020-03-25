@@ -151,20 +151,24 @@ const showMessage = (data, output) => {
 socket.on("pingpong", (data) => {
     data.p1 ? p1.y = data.p1.y : false;
     data.p2 ? p2.y = data.p2.y : false;
+    data.ball ? ball = data.ball : false;
+
+    console.log('BALL',data.ball);
 });
 
 let pongRoom;
 
 socket.on("ponginvite", data => {
+    console.log(data);
  socket.emit("pongaccept", data);
- console.log("pong accepted", pongRoom);
- pongRoom = data.room;
+    pongRoom = data.room;
+    console.log("pong accepted", pongRoom);
 });
 
 
 
 //temp
-const canvas = document.getElementById("myCanvas")
+const canvas = document.getElementById("myCanvas");
 const c = canvas.getContext("2d");
 const fps = 60;
 let p1 = {
@@ -184,6 +188,13 @@ let p2 = {
     height: 100,
 };
 
+let ball = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+};
+
 function draw() {
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.width);
@@ -191,6 +202,10 @@ function draw() {
     c.fillRect(p1.x, p1.y, p1.width, p1.height);
     c.fillStyle = "black";
     c.fillRect(p2.x, p2.y, p2.width, p2.height);
+    c.fillStyle = "black";
+    c.fillRect(ball.x, ball.y, ball.width, ball.height);
+
+
 
     const gameData = {
         up: p1.keys.up,
