@@ -196,6 +196,7 @@ let ball = {
 };
 
 function draw() {
+    if(pongRoom){
     c.fillStyle = "white";
     c.fillRect(0, 0, canvas.width, canvas.width);
     c.fillStyle = "black";
@@ -214,6 +215,8 @@ function draw() {
     };
 
     socket.emit("pingpong", gameData);
+    }
+
 }
 
 $("#modalGame").keydown(e => {
@@ -239,7 +242,11 @@ $("#modalGame").keyup(e => {
             p1.keys.down = false;
             break;
     }
+
 });
 
-setInterval(draw, 1000 / fps);
+
+    setInterval(draw, 1000 / fps);
+
+
 
