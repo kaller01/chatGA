@@ -9,18 +9,25 @@ const linkPreview = require("./link");
 let Client = function (socketid, name) {
     let id = socketid;
     let username = name;
+    let room;
     this.getId = function () {
         return id;
     };
     this.getUsername = function () {
         return username;
     };
+    this.getRoom = ()=>{
+        return room;
+    };
+    this.setRoom = (input)=>{
+      room = input;
+    }
 };
 
 //Array with clients
 let clients = [];
 
-let msg = function (fromId, data, io) {
+let msg = function (fromId, data, io, socket) {
     //Uses stripHtml to remove all html tags and then uses anchrome to put <a> around links
     const rawMessage = data.message;
     const message = anchorme(stripHtml(rawMessage));
@@ -28,17 +35,18 @@ let msg = function (fromId, data, io) {
     if (typeof clients[fromId] == "undefined") {
         io.to(fromId).emit("chatMessage", {
             message: "authorization needed",
-            sender:{
-              username: "system"
+            sender: {
+                username: "system"
             },
             receiver: {
-              username: "all"
+                username: "all"
             }
         });
     } else {
         //checks for /msg
         if (rawMessage.startsWith("/")) {
-            switch (rawMessage.split(" ")[0]) {
+            const wordsInMessage = rawMessage.split(" ");
+            switch (wordsInMessage[0]) {
                 case "/msg":
                     command.private(fromId, message, io, clients);
                     break;
@@ -53,6 +61,16 @@ let msg = function (fromId, data, io) {
                     break;
                 case "/watch":
                     command.watch(fromId, rawMessage, io, clients);
+                    break;
+                case "/pong":
+                        getIdFromUsername(wordsInMessage[1]).then(id=>{
+                            command.pong({
+                                socket,
+                                id,
+                                io,
+                                clients
+                            });
+                        });
                     break;
             }
         } else {
@@ -155,31 +173,22 @@ async function createUserDB(socketid, io, username, password) {
     }
 }
 
-//takes an io object
-const emitMessage = (data, io, id = 0) => {
-    const socketchannel = "chatMessage";
-    const messagedata = {
-        message: data.message,
-        username: data.sender,
-        receiver: {
-            username: data.receiver
-        },
-    };
-    if (id) {
-        console.log(id);
-        io.to(id).emit(socketchannel, messagedata);
-        linkPreview.messageToLink(data.message, io.to(id)).catch(e => {
+const getIdFromUsername = (username) => {
+    return new Promise(resolve=>{
+        console.log(clients);
+        Object.keys(clients).forEach(function (id) {
+            console.log(clients[id].getUsername(), username);
+            if (clients[id].getUsername() === username) {
+                console.log('INVITED ID 1',id);
+                resolve(id);
+            }
         });
-    } else {
-        io.emit(socketchannel, messagedata);
-        linkPreview.messageToLink(data.message, io).catch(e => {
-        });
-    }
+    });
 };
 
 
 module.exports = {
-    msg: msg,
+    msg,
     addClient: addClient,
     disconnect: disconnectClient,
     login: logintoDB,

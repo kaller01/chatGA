@@ -39,16 +39,16 @@ socket.on("chatMessage", function (data) {
     if (data.receiver.username === "all") {
         addNotifcations("all");
         showMessage(data, $("#output"));
-      console.log("mode 1");
+        console.log("mode 1");
     } else {
         if (data.receiver.username === clientUsername) {
             newConversation(data.sender.username);
             addNotifcations(data.sender.username);
-          console.log("mode 2");
+            console.log("mode 2");
             showMessage(data, $("#" + data.sender.username + "-output"));
         } else {
-          console.log("mode 3");
-            showMessage(data, $("#" + data.receiver.username  + "-output"));
+            console.log("mode 3");
+            showMessage(data, $("#" + data.receiver.username + "-output"));
         }
     }
     setTimeout(() => {
@@ -147,3 +147,106 @@ const showMessage = (data, output) => {
             )
     );
 };
+
+socket.on("pingpong", (data) => {
+    data.p1 ? p1.y = data.p1.y : false;
+    data.p2 ? p2.y = data.p2.y : false;
+    data.ball ? ball = data.ball : false;
+
+    console.log('BALL',data.ball);
+});
+
+let pongRoom;
+
+socket.on("ponginvite", data => {
+    console.log(data);
+ socket.emit("pongaccept", data);
+    pongRoom = data.room;
+    console.log("pong accepted", pongRoom);
+});
+
+
+
+//temp
+const canvas = document.getElementById("myCanvas");
+const c = canvas.getContext("2d");
+const fps = 60;
+let p1 = {
+    x: 100,
+    y: 100,
+    width: 20,
+    height: 100,
+    keys: {
+        up: false,
+        down: false,
+    }
+};
+let p2 = {
+    x: 1000,
+    y: 100,
+    width: 20,
+    height: 100,
+};
+
+let ball = {
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0
+};
+
+function draw() {
+    if(pongRoom){
+    c.fillStyle = "white";
+    c.fillRect(0, 0, canvas.width, canvas.width);
+    c.fillStyle = "black";
+    c.fillRect(p1.x, p1.y, p1.width, p1.height);
+    c.fillStyle = "black";
+    c.fillRect(p2.x, p2.y, p2.width, p2.height);
+    c.fillStyle = "black";
+    c.fillRect(ball.x, ball.y, ball.width, ball.height);
+
+
+
+    const gameData = {
+        up: p1.keys.up,
+        down: p1.keys.down,
+        room: pongRoom
+    };
+
+    socket.emit("pingpong", gameData);
+    }
+
+}
+
+$("#modalGame").keydown(e => {
+    switch (e.key) {
+        case "w":
+        case "ArrowUp":
+            p1.keys.up = true;
+            break;
+        case "s":
+        case "ArrowDown":
+            p1.keys.down = true;
+            break;
+    }
+});
+$("#modalGame").keyup(e => {
+    switch (e.key) {
+        case "w":
+        case "ArrowUp":
+            p1.keys.up = false;
+            break;
+        case "s":
+        case "ArrowDown":
+            p1.keys.down = false;
+            break;
+    }
+
+});
+
+
+    setInterval(draw, 1000 / fps);
+
+
+

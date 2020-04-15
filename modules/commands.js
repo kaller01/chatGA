@@ -78,19 +78,22 @@ const privateMessage = function(fromId, message, io, clients) {
   });
 };
 
-const getSocketByUsername = (username, clients) => {
-  return new Promise(resolve => {
-    Object.keys(clients).forEach(function(id) {
-      if (clients[id].getUsername() === username) {
-        resolve(id);
-      }
-    });
-    resolve(false);
+const pong = (data)=>{
+  const socket = data.socket;
+  const io = data.io;
+  const invitedId = data.id;
+  let clients = data.clients;
+  clients[socket.id].setRoom("");
+  let room = socket.id+"pong";
+  console.log(room);
+  socket.join(room);
+  io.to(socket.id).emit("ponginvite",{
+    room
   });
-};
-
-const getUsernameBySocket = (socket, clients) => {
-  return clients[socket];
+  console.log('ID 2',invitedId);
+  io.to(invitedId).emit("ponginvite",{
+    room
+  })
 };
 
 module.exports = {
@@ -100,6 +103,5 @@ module.exports = {
   private: privateMessage,
   modal,
   watch,
-  getSocketByUsername,
-  getUsernameBySocket
+  pong
 };
