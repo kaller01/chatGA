@@ -3,6 +3,7 @@ const chat = require("./chatManager");
 const ejsHelpers = require("./../views/helpers/createModal");
 
 const home = async (req, res, io) => {
+  console.log(req.session);
   if (req.session.username) {
     if (
       (await db.login(req.session.username, req.session.password)) &&
