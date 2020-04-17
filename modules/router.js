@@ -70,7 +70,7 @@ const loginAccount = async (req, res, io) => {
     }
   } else {
     if (req.body.username && req.body.username.length >= 3) {
-      const username = req.body.username.replace(/[^a-zA-Z ]| /g, "");
+      const username = req.body.username.replace(/[^a-zA-Z0-9 ]| /g, "");
       if (username.length < req.body.username.length) {
         await res.json({ error: "Illegal characters used" });
       } else {
